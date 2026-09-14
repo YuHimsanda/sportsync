@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — Sports Management System</title>
+  <link rel="stylesheet" href="css/css_profile.css">
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">🏆 SportsMS</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="teams.html">Teams</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="about.html">About</a>
+        <a href="profile.html" class="active">My Profile</a>
+        <a href="index.html" class="btn btn-outline">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Page header ===== -->
+  <section class="page-header">
+    <div class="container">
+      <h1>My Profile</h1>
+      <p>View and update your account details.</p>
+    </div>
+  </section>
+
+  <section class="container profile-section">
+    <div class="profile-layout">
+
+      <!-- ===== Left: avatar + summary ===== -->
+      <div class="profile-card">
+        <div class="avatar">Y</div>
+        <h3>Yuhas Perera</h3>
+        <p class="muted">Player · Eagles FC</p>
+        <button class="btn btn-outline avatar-btn">Change Photo</button>
+      </div>
+
+      <!-- ===== Right: forms ===== -->
+      <div class="profile-forms">
+
+        <!-- Basic info -->
+        <form class="form-card">
+          <h2>Basic Information</h2>
+
+          <div class="form-row">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" class="input" value="Yuhas Perera">
+          </div>
+
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="input" value="yuhas@example.com">
+          </div>
+
+          <div class="form-row">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" class="input" placeholder="07X XXX XXXX">
+          </div>
+
+          <!-- Role-specific fields -->
+          <div class="form-row">
+            <label for="position">Position <span class="muted">(Player)</span></label>
+            <select id="position" class="input">
+              <option>Forward</option>
+              <option>Midfielder</option>
+              <option>Defender</option>
+              <option>Goalkeeper</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+
+        <!-- Password change -->
+        <form class="form-card">
+          <h2>Change Password</h2>
+
+          <div class="form-row">
+            <label for="current-pass">Current Password</label>
+            <input type="password" id="current-pass" class="input" placeholder="••••••••">
+          </div>
+
+          <div class="form-row">
+            <label for="new-pass">New Password</label>
+            <input type="password" id="new-pass" class="input" placeholder="••••••••">
+          </div>
+
+          <div class="form-row">
+            <label for="confirm-pass">Confirm New Password</label>
+            <input type="password" id="confirm-pass" class="input" placeholder="••••••••">
+          </div>
+
+          <button type="submit" class="btn btn-accent">Update Password</button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Sports Management System. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="teams.html">Teams</a>
+        <a href="schedule.html">Schedule</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

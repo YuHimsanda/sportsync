@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule — Sports Management System</title>
+  <link rel="stylesheet" href="css/css_schedule.css">
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">🏆 SportsMS</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="teams.html">Teams</a>
+        <a href="schedule.html" class="active">Schedule</a>
+        <a href="about.html">About</a>
+        <a href="login.html" class="btn btn-outline">Login</a>
+        <a href="register.html" class="btn btn-primary">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Page header ===== -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Match Schedule</h1>
+      <p>See upcoming fixtures and past results across all teams.</p>
+    </div>
+  </section>
+
+  <!-- ===== Filter bar ===== -->
+  <section class="container filter-bar">
+    <div class="filter-controls">
+      <select class="input">
+        <option value="">All Teams</option>
+        <option value="eagles">Eagles FC</option>
+        <option value="falcons">Falcons United</option>
+        <option value="titans">Titans SC</option>
+      </select>
+      <select class="input">
+        <option value="">All Divisions</option>
+        <option value="u18">U18</option>
+        <option value="u21">U21</option>
+        <option value="senior">Senior</option>
+      </select>
+      <input type="date" class="input">
+      <button class="btn btn-outline">Filter</button>
+    </div>
+    <!-- Admin / Coach only -->
+    <button class="btn btn-accent">+ Schedule New Match</button>
+  </section>
+
+  <!-- ===== Match table ===== -->
+  <section class="container schedule-section">
+
+    <h2 class="section-title">Upcoming</h2>
+    <div class="table-wrap">
+      <table class="match-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Match</th>
+            <th>Venue</th>
+            <th>Division</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>20 Sep 2026</td>
+            <td>4:00 PM</td>
+            <td>Eagles FC <span class="vs">vs</span> Falcons United</td>
+            <td>City Stadium</td>
+            <td>U21</td>
+            <td><span class="status status-upcoming">Upcoming</span></td>
+          </tr>
+          <tr>
+            <td>21 Sep 2026</td>
+            <td>6:30 PM</td>
+            <td>Titans SC <span class="vs">vs</span> Wolves Athletic</td>
+            <td>Central Ground</td>
+            <td>U18</td>
+            <td><span class="status status-upcoming">Upcoming</span></td>
+          </tr>
+          <tr>
+            <td>24 Sep 2026</td>
+            <td>5:00 PM</td>
+            <td>Lions Club <span class="vs">vs</span> Sharks FC</td>
+            <td>Riverside Arena</td>
+            <td>Senior</td>
+            <td><span class="status status-upcoming">Upcoming</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="section-title">Completed</h2>
+    <div class="table-wrap">
+      <table class="match-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Match</th>
+            <th>Venue</th>
+            <th>Division</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>10 Sep 2026</td>
+            <td>4:00 PM</td>
+            <td>Eagles FC <span class="vs">vs</span> Titans SC</td>
+            <td>City Stadium</td>
+            <td>U21</td>
+            <td><span class="status status-done">2 – 1</span></td>
+          </tr>
+          <tr>
+            <td>07 Sep 2026</td>
+            <td>6:00 PM</td>
+            <td>Wolves Athletic <span class="vs">vs</span> Sharks FC</td>
+            <td>Central Ground</td>
+            <td>U18</td>
+            <td><span class="status status-done">0 – 0</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Sports Management System. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="teams.html">Teams</a>
+        <a href="schedule.html">Schedule</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

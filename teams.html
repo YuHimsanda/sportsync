@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teams — Sports Management System</title>
+  <link rel="stylesheet" href="css/css_team.css">
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">🏆 SportsMS</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="teams.html" class="active">Teams</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="about.html">About</a>
+        <a href="login.html" class="btn btn-outline">Login</a>
+        <a href="register.html" class="btn btn-primary">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Page header ===== -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Teams</h1>
+      <p>Browse all registered teams across every division.</p>
+    </div>
+  </section>
+
+  <!-- ===== Filter bar ===== -->
+  <section class="container filter-bar">
+    <div class="filter-controls">
+      <input type="text" class="input" placeholder="Search team name...">
+      <select class="input">
+        <option value="">All Divisions</option>
+        <option value="u18">U18</option>
+        <option value="u21">U21</option>
+        <option value="senior">Senior</option>
+      </select>
+      <button class="btn btn-outline">Filter</button>
+    </div>
+    <!-- Admin / Coach only -->
+    <button class="btn btn-accent">+ Add New Team</button>
+  </section>
+
+  <!-- ===== Team grid ===== -->
+  <section class="container team-grid-section">
+    <div class="card-grid">
+
+      <div class="card team-card">
+        <span class="badge">U21</span>
+        <h3>Eagles FC</h3>
+        <p class="muted">Coach: R. Perera</p>
+        <p class="muted">18 players</p>
+        <a href="#" class="link-more">View Roster &rarr;</a>
+      </div>
+
+      <div class="card team-card">
+        <span class="badge">Senior</span>
+        <h3>Falcons United</h3>
+        <p class="muted">Coach: N. Fernando</p>
+        <p class="muted">22 players</p>
+        <a href="#" class="link-more">View Roster &rarr;</a>
+      </div>
+
+      <div class="card team-card">
+        <span class="badge">U18</span>
+        <h3>Titans SC</h3>
+        <p class="muted">Coach: S. Silva</p>
+        <p class="muted">16 players</p>
+        <a href="#" class="link-more">View Roster &rarr;</a>
+      </div>
+
+      <div class="card team-card">
+        <span class="badge">Senior</span>
+        <h3>Wolves Athletic</h3>
+        <p class="muted">Coach: D. Jayasuriya</p>
+        <p class="muted">20 players</p>
+        <a href="#" class="link-more">View Roster &rarr;</a>
+      </div>
+
+      <div class="card team-card">
+        <span class="badge">U21</span>
+        <h3>Lions Club</h3>
+        <p class="muted">Coach: K. Gunawardena</p>
+        <p class="muted">19 players</p>
+        <a href="#" class="link-more">View Roster &rarr;</a>
+      </div>
+
+      <div class="card team-card">
+        <span class="badge">U18</span>
+        <h3>Sharks FC</h3>
+        <p class="muted">Coach: M. Rathnayake</p>
+        <p class="muted">17 players</p>
+        <a href="#" class="link-more">View Roster &rarr;</a>
+      </div>
+
+    </div>
+
+    <!-- ===== Pagination ===== -->
+    <div class="pagination">
+      <button class="page-btn" disabled>&laquo; Prev</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">Next &raquo;</button>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Sports Management System. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="teams.html">Teams</a>
+        <a href="schedule.html">Schedule</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
