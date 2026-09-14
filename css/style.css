@@ -104,10 +104,10 @@ h1, h2, h3 { line-height: 1.25; margin-bottom: 12px; }
   padding: 14px 20px;
 }
 .logo {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--color-primary);
+  display: flex;
+  align-items: center;
 }
+.logo img { display: block; width: 180px; height: auto; }
 .logo:hover { text-decoration: none; color: var(--color-primary-hover); }
 
 .nav-links { display: flex; align-items: center; gap: 22px; }
