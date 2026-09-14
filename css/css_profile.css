@@ -1,4 +1,3 @@
-/* ===== Theme variables (Blue + Orange) ===== */
 :root {
   --color-primary: #1565C0;
   --color-primary-hover: #0D47A1;
@@ -16,7 +15,6 @@
   --color-disabled: #9CA3AF;
 }
 
-/* ===== Reset / base ===== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -37,7 +35,6 @@ a:hover { color: var(--color-link-hover); text-decoration: underline; }
 
 h1, h2, h3 { line-height: 1.25; margin-bottom: 12px; }
 
-/* ===== Buttons ===== */
 .btn {
   display: inline-block;
   padding: 10px 22px;
@@ -47,7 +44,6 @@ h1, h2, h3 { line-height: 1.25; margin-bottom: 12px; }
   cursor: pointer;
   font-size: 0.95rem;
   text-decoration: none !important;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-primary {
@@ -82,7 +78,6 @@ h1, h2, h3 { line-height: 1.25; margin-bottom: 12px; }
   color: #FFFFFF;
 }
 
-/* ===== Navbar ===== */
 .navbar {
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
@@ -109,7 +104,6 @@ h1, h2, h3 { line-height: 1.25; margin-bottom: 12px; }
 .nav-links a.active { color: var(--color-primary); font-weight: 700; }
 .nav-links .btn { padding: 8px 18px; }
 
-/* ===== Page header ===== */
 .page-header {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
   color: #FFFFFF;
@@ -117,7 +111,6 @@ h1, h2, h3 { line-height: 1.25; margin-bottom: 12px; }
 }
 .page-header p { opacity: 0.9; margin-top: 6px; }
 
-/* ===== Profile layout ===== */
 .profile-section { padding: 40px 20px 60px; }
 .profile-layout {
   display: grid;
@@ -126,7 +119,6 @@ h1, h2, h3 { line-height: 1.25; margin-bottom: 12px; }
   align-items: start;
 }
 
-/* Left summary card */
 .profile-card {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -150,7 +142,6 @@ h1, h2, h3 { line-height: 1.25; margin-bottom: 12px; }
 .avatar-btn { margin-top: 14px; width: 100%; }
 .muted { color: var(--color-text-muted); font-size: 0.9rem; }
 
-/* Right forms */
 .profile-forms { display: flex; flex-direction: column; gap: 20px; }
 .form-card {
   background-color: var(--color-surface);
@@ -180,7 +171,6 @@ h1, h2, h3 { line-height: 1.25; margin-bottom: 12px; }
   border-color: var(--color-primary);
 }
 
-/* ===== Footer ===== */
 .footer {
   background-color: var(--color-text);
   color: #E5E7EB;
@@ -196,7 +186,6 @@ h1, h2, h3 { line-height: 1.25; margin-bottom: 12px; }
 .footer-links a { color: #E5E7EB; }
 .footer-links a:hover { color: var(--color-accent); }
 
-/* ===== Responsive ===== */
 @media (max-width: 700px) {
   .profile-layout { grid-template-columns: 1fr; }
   .navbar-inner { flex-direction: column; gap: 12px; }
