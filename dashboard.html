@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — SportTourney</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a12;
+            --bg-surface: #101020;
+            --bg-card: rgba(18, 18, 32, 0.85);
+            --accent: #f97316;
+            --accent-hover: #fb923c;
+            --accent-glow: rgba(249, 115, 22, 0.2);
+            --text: #eeeef2;
+            --text-muted: #7a7a9e;
+            --border: rgba(255, 255, 255, 0.07);
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #eab308;
+            --info: #06b6d4;
+            --sidebar-w: 260px;
+            --topbar-h: 64px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            position: fixed; top: 0; left: 0; bottom: 0;
+            width: var(--sidebar-w); z-index: 100;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column;
+            transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+        }
+        .sidebar.collapsed { transform: translateX(-100%); }
+
+        .sidebar-brand {
+            padding: 1.3rem 1.4rem; display: flex; align-items: center; gap: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .sidebar-brand .logo {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), #fb923c);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: #fff;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+        .sidebar-brand h2 {
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.15rem;
+        }
+        .sidebar-brand .tag {
+            font-size: 0.65rem; background: rgba(249,115,22,0.15); color: var(--accent);
+            padding: 0.15rem 0.5rem; border-radius: 100px; font-weight: 600; margin-left: auto;
+        }
+
+        /* Role badge */
+        .role-badge {
+            margin: 1.2rem 1.4rem 0; padding: 0.6rem 0.9rem;
+            background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2);
+            border-radius: 10px; display: flex; align-items: center; gap: 0.6rem;
+            font-size: 0.82rem; font-weight: 600; color: var(--accent);
+        }
+        .role-badge i { font-size: 1rem; }
+
+        /* Navigation */
+        .sidebar-nav { flex: 1; padding: 1rem 0.8rem; overflow-y: auto; }
+        .nav-section-label {
+            font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-muted); padding: 0.8rem 0.7rem 0.4rem;
+        }
+        .nav-item {
+            display: flex; align-items: center; gap: 0.7rem;
+            padding: 0.7rem 0.9rem; border-radius: 10px;
+            color: var(--text-muted); font-size: 0.88rem; font-weight: 500;
+            cursor: pointer; transition: all 0.2s; position: relative;
+            text-decoration: none;
+        }
+        .nav-item i { font-size: 0.9rem; width: 20px; text-align: center; }
+        .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+        .nav-item.active {
+            background: rgba(249,115,22,0.1); color: var(--accent);
+        }
+        .nav-item.active::before {
+            content: ''; position: absolute; left: -0.8rem; top: 50%;
+            width: 3px; height: 60%; transform: translateY(-50%);
+            background: var(--accent); border-radius: 3px;
+        }
+        .nav-item .badge {
+            margin-left: auto; background: var(--danger); color: #fff;
+            font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.45rem;
+            border-radius: 100px; min-width: 18px; text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.2rem; border-top: 1px solid var(--border);
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .sidebar-footer .avatar {
+            width: 36px; height: 36px; border-radius: 10px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; color: #fff; flex-shrink: 0;
+        }
+        .sidebar-footer .user-info { flex: 1; min-width: 0; }
+        .sidebar-footer .user-name { font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sidebar-footer .user-email { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* ── Top bar ── */
+        .topbar {
+            position: fixed; top: 0; left: var(--sidebar-w); right: 0;
+            height: var(--topbar-h); z-index: 90;
+            background: rgba(10, 10, 18, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+            transition: left 0.35s cubic-bezier(0.16,1,0.3,1);
+        }
+        .topbar.expanded { left: 0; }
+
+        .hamburger {
+            display: none; background: none; border: none; color: var(--text);
+            font-size: 1.2rem; cursor: pointer; padding: 0.3rem;
+        }
+        .topbar .page-title {
+            font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem;
+        }
+
+        .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 0.6rem; }
+
+        .topbar-btn {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 0.9rem; cursor: pointer;
+            transition: all 0.2s; position: relative;
+        }
+        .topbar-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+        .topbar-btn .notif-dot {
+            position: absolute; top: 6px; right: 6px;
+            width: 8px; height: 8px; background: var(--danger);
+            border-radius: 50%; border: 2px solid var(--bg);
+        }
+
+        .btn-logout {
+            padding: 0.5rem 1rem; border-radius: 10px;
+            background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
+            color: var(--danger); font-size: 0.82rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .btn-logout:hover { background: rgba(239,68,68,0.2); }
+
+        /* ── Main content ── */
+        .main {
+            margin-left: var(--sidebar-w); padding-top: var(--topbar-h);
+            min-height: 100vh; transition: margin-left 0.35s cubic-bezier(0.16,1,0.3,1);
+        }
+        .main.expanded { margin-left: 0; }
+        .main-inner { padding: 1.5rem; max-width: 1300px; margin: 0 auto; }
+
+        /* ── Welcome banner ── */
+        .welcome-banner {
+            background: linear-gradient(135deg, rgba(249,115,22,0.12), rgba(251,146,60,0.06));
+            border: 1px solid rgba(249,115,22,0.15);
+            border-radius: 20px; padding: 2rem 2.2rem;
+            margin-bottom: 1.5rem; position: relative; overflow: hidden;
+            animation: fadeInUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+        }
+        .welcome-banner::before {
+            content: ''; position: absolute; right: -40px; top: -40px;
+            width: 200px; height: 200px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(249,115,22,0.15), transparent 70%);
+        }
+        .welcome-banner::after {
+            content: ''; position: absolute; right: 30px; bottom: -20px;
+            width: 120px; height: 120px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(6,182,212,0.1), transparent 70%);
+        }
+        .welcome-banner h1 {
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.7rem;
+            margin-bottom: 0.3rem; position: relative; z-index: 1;
+        }
+        .welcome-banner h1 span { color: var(--accent); }
+        .welcome-banner p {
+            color: var(--text-muted); font-size: 0.92rem; position: relative; z-index: 1;
+        }
+        .welcome-banner .banner-date {
+            position: relative; z-index: 1; margin-top: 0.8rem;
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            font-size: 0.8rem; color: var(--text-muted);
+            background: rgba(255,255,255,0.04); padding: 0.35rem 0.8rem;
+            border-radius: 100px; border: 1px solid var(--border);
+        }
+
+        /* ── Summary cards ── */
+        .summary-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem; margin-bottom: 1.5rem;
+        }
+        .summary-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.4rem 1.5rem;
+            backdrop-filter: blur(12px); position: relative; overflow: hidden;
+            transition: all 0.3s; cursor: default;
+        }
+        .summary-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.12); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+        .summary-card .card-icon {
+            width: 42px; height: 42px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; margin-bottom: 1rem;
+        }
+        .summary-card .card-value {
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.8rem;
+            line-height: 1; margin-bottom: 0.3rem;
+        }
+        .summary-card .card-label { font-size: 0.82rem; color: var(--text-muted); }
+        .summary-card .card-trend {
+            position: absolute; top: 1.2rem; right: 1.2rem;
+            font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;
+        }
+        .summary-card .card-trend.up { color: var(--success); }
+        .summary-card .card-trend.down { color: var(--danger); }
+
+        /* Card color variants */
+        .card-orange .card-icon { background: rgba(249,115,22,0.12); color: var(--accent); }
+        .card-cyan .card-icon { background: rgba(6,182,212,0.12); color: var(--info); }
+        .card-green .card-icon { background: rgba(34,197,94,0.12); color: var(--success); }
+        .card-purple .card-icon { background: rgba(139,92,246,0.12); color: #8b5cf6; }
+
+        /* ── Content grid ── */
+        .content-grid {
+            display: grid; grid-template-columns: 1fr 380px;
+            gap: 1.5rem; margin-bottom: 1.5rem;
+        }
+
+        .section-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.5rem;
+            backdrop-filter: blur(12px);
+        }
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 1.2rem;
+        }
+        .section-header h3 {
+            font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.05rem;
+        }
+        .section-header .view-all {
+            font-size: 0.8rem; color: var(--accent); cursor: pointer;
+            font-weight: 600; transition: color 0.2s;
+        }
+        .section-header .view-all:hover { color: var(--accent-hover); }
+
+        /* ── Matches table ── */
+        .matches-table { width: 100%; border-collapse: collapse; }
+        .matches-table th {
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.06em; color: var(--text-muted);
+            padding: 0.6rem 0.8rem; text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .matches-table td {
+            padding: 0.75rem 0.8rem; font-size: 0.88rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        .matches-table tr:last-child td { border-bottom: none; }
+        .matches-table tr { transition: background 0.2s; }
+        .matches-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+        .team-cell { display: flex; align-items: center; gap: 0.5rem; }
+        .team-cell .team-flag {
+            width: 28px; height: 28px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 700; color: #fff; flex-shrink: 0;
+        }
+        .match-score {
+            font-family: 'Outfit', sans-serif; font-weight: 700;
+            font-size: 0.85rem; text-align: center; min-width: 60px;
+        }
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.25rem 0.65rem; border-radius: 100px;
+            font-size: 0.72rem; font-weight: 600;
+        }
+        .status-badge.live { background: rgba(239,68,68,0.12); color: var(--danger); }
+        .status-badge.live::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--danger); animation: pulse 1.5s infinite;
+        }
+        .status-badge.upcoming { background: rgba(6,182,212,0.12); color: var(--info); }
+        .status-badge.completed { background: rgba(34,197,94,0.12); color: var(--success); }
+        @keyframes pulse { 0%,100%{ opacity: 1; } 50%{ opacity: 0.3; } }
+
+        /* ── Activity / Notifications ── */
+        .activity-list { display: flex; flex-direction: column; gap: 0; }
+        .activity-item {
+            display: flex; gap: 0.8rem; padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border); position: relative;
+            animation: fadeInUp 0.4s cubic-bezier(0.16,1,0.3,1) both;
+        }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-item .act-icon {
+            width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem;
+        }
+        .activity-item .act-text { flex: 1; }
+        .activity-item .act-title { font-size: 0.85rem; font-weight: 500; line-height: 1.4; }
+        .activity-item .act-time { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+        /* Notification items */
+        .notif-item {
+            display: flex; gap: 0.8rem; padding: 0.85rem 0;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer; transition: background 0.2s; border-radius: 6px;
+        }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-item:hover { background: rgba(255,255,255,0.02); }
+        .notif-item .notif-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--accent); flex-shrink: 0; margin-top: 0.35rem;
+        }
+        .notif-item.read .notif-dot { background: transparent; }
+        .notif-item .notif-content { flex: 1; }
+        .notif-item .notif-text { font-size: 0.84rem; line-height: 1.4; }
+        .notif-item .notif-time { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+        /* ── Quick actions ── */
+        .quick-actions {
+            display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem;
+        }
+        .quick-btn {
+            display: flex; align-items: center; gap: 0.4rem;
+            padding: 0.5rem 1rem; border-radius: 10px;
+            font-size: 0.82rem; font-weight: 600; cursor: pointer;
+            border: 1px solid var(--border); transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif; color: var(--text);
+            background: rgba(255,255,255,0.04);
+        }
+        .quick-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); transform: translateY(-1px); }
+        .quick-btn.primary { background: rgba(249,115,22,0.1); border-color: rgba(249,115,22,0.25); color: var(--accent); }
+        .quick-btn.primary:hover { background: rgba(249,115,22,0.18); }
+
+        /* ── Animations ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .anim-delay-1 { animation-delay: 0.08s; }
+        .anim-delay-2 { animation-delay: 0.16s; }
+        .anim-delay-3 { animation-delay: 0.24s; }
+        .anim-delay-4 { animation-delay: 0.32s; }
+
+        /* ── Toast ── */
+        .toast-container { position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.6rem; }
+        .toast {
+            padding: 0.9rem 1.2rem; border-radius: 12px;
+            background: rgba(18,18,30,0.95); border: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+            display: flex; align-items: center; gap: 0.7rem;
+            font-size: 0.88rem; color: var(--text);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            animation: toastIn 0.4s cubic-bezier(0.16,1,0.3,1) both;
+        }
+        .toast.toast-out { animation: toastOut 0.3s ease both; }
+        .toast i { font-size: 1rem; }
+        .toast.success i { color: var(--success); }
+        .toast.error i { color: var(--danger); }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { to { opacity: 0; transform: translateX(40px); } }
+
+        /* ── Mobile sidebar overlay ── */
+        .sidebar-overlay {
+            position: fixed; inset: 0; z-index: 99;
+            background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .sidebar-overlay.active { opacity: 1; pointer-events: auto; }
+
+        /* ── Responsive ── */
+        @media (max-width: 1100px) {
+            .content-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; }
+            .topbar { left: 0; }
+            .hamburger { display: flex; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .summary-grid { grid-template-columns: 1fr; }
+            .main-inner { padding: 1rem; }
+            .welcome-banner { padding: 1.5rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo"><i class="fas fa-trophy"></i></div>
+            <h2>SportTourney</h2>
+            <span class="tag">v2.0</span>
+        </div>
+
+        <div class="role-badge" id="roleBadge">
+            <i class="fas fa-running"></i>
+            <span>Player</span>
+        </div>
+
+        <nav class="sidebar-nav" id="sidebarNav" aria-label="Main navigation">
+            <!-- Nav items will be populated by JS based on role -->
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="avatar" id="userAvatar">CR</div>
+            <div class="user-info">
+                <div class="user-name" id="userName">Cristiano Ronaldo</div>
+                <div class="user-email" id="userEmail">cr@example.com</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Top bar -->
+    <header class="topbar" id="topbar">
+        <button class="hamburger" id="hamburger" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+        <span class="page-title">Dashboard</span>
+
+        <div class="topbar-right">
+            <button class="topbar-btn" aria-label="Search"><i class="fas fa-search"></i></button>
+            <button class="topbar-btn" aria-label="Notifications" id="notifBtn">
+                <i class="fas fa-bell"></i>
+                <span class="notif-dot"></span>
+            </button>
+            <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main" id="mainContent">
+        <div class="main-inner">
+
+            <!-- Welcome banner -->
+            <div class="welcome-banner" id="welcomeBanner">
+                <h1>Welcome back, <span id="welcomeName">Player</span></h1>
+                <p id="welcomeSubtext">Here's what's happening with your tournaments today.</p>
+                <div class="banner-date"><i class="fas fa-calendar-alt"></i> <span id="currentDate"></span></div>
+                <div class="quick-actions" id="quickActions">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Summary cards -->
+            <div class="summary-grid" id="summaryGrid">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Content grid: Matches + Activity/Notifications -->
+            <div class="content-grid">
+                <!-- Matches section -->
+                <div class="section-card" style="animation: fadeInUp 0.5s cubic-bezier(0.16,1,0.3,1) 0.3s both;">
+                    <div class="section-header">
+                        <h3><i class="fas fa-futbol" style="color:var(--accent);margin-right:0.5rem;font-size:0.9rem;"></i>Upcoming Matches</h3>
+                        <span class="view-all">View Schedule</span>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="matches-table" id="matchesTable">
+                            <!-- Populated by JS -->
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right column: Notifications + Activity -->
+                <div style="display:flex;flex-direction:column;gap:1.5rem;">
+                    <div class="section-card" style="animation: fadeInUp 0.5s cubic-bezier(0.16,1,0.3,1) 0.4s both;">
+                        <div class="section-header">
+                            <h3><i class="fas fa-bell" style="color:var(--warning);margin-right:0.5rem;font-size:0.9rem;"></i>Notifications</h3>
+                            <span class="view-all" id="markAllRead">Mark all read</span>
+                        </div>
+                        <div id="notificationsList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="section-card" style="animation: fadeInUp 0.5s cubic-bezier(0.16,1,0.3,1) 0.5s both;">
+                        <div class="section-header">
+                            <h3><i class="fas fa-clock-rotate-left" style="color:var(--info);margin-right:0.5rem;font-size:0.9rem;"></i>Recent Activity</h3>
+                            <span class="view-all">View All</span>
+                        </div>
+                        <div class="activity-list" id="activityList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ── User data from localStorage (set by register page) ──
+        const defaultUser = { name: 'Alex Morgan', email: 'alex@sporttourney.com', role: 'player' };
+        const stored = localStorage.getItem('sportTourneyUser');
+        const user = stored ? JSON.parse(stored) : defaultUser;
+
+        // ── Set current date ──
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        // ── Populate user info ──
+        const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        document.getElementById('userAvatar').textContent = initials;
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('userEmail').textContent = user.email;
+        document.getElementById('welcomeName').textContent = user.name.split(' ')[0];
+
+        // ── Role badge ──
+        const roleBadge = document.getElementById('roleBadge');
+        const roleIcons = { player: 'fa-running', coach: 'fa-clipboard-list', admin: 'fa-shield-halved' };
+        const roleLabels = { player: 'Player', coach: 'Coach', admin: 'Admin' };
+        roleBadge.innerHTML = `<i class="fas ${roleIcons[user.role] || 'fa-user'}"></i><span>${roleLabels[user.role] || 'User'}</span>`;
+
+        // ── Role-based welcome subtext ──
+        const subtexts = {
+            player: "Here's what's happening with your tournaments and teams today.",
+            coach: "Manage your teams, review strategies, and track player performance.",
+            admin: "Full system overview — manage tournaments, users, and platform settings."
+        };
+        document.getElementById('welcomeSubtext').textContent = subtexts[user.role] || subtexts.player;
+
+        // ── Role-based navigation ──
+        const navConfigs = {
+            player: [
+                { section: 'Main' },
+                { icon: 'fa-grid-2', label: 'Dashboard', active: true },
+                { icon: 'fa-futbol', label: 'My Tournaments' },
+                { icon: 'fa-users', label: 'My Teams' },
+                { icon: 'fa-calendar-days', label: 'Schedule' },
+                { section: 'Performance' },
+                { icon: 'fa-chart-line', label: 'Statistics' },
+                { icon: 'fa-medal', label: 'Leaderboard' },
+                { section: 'Account' },
+                { icon: 'fa-credit-card', label: 'Payments', badge: '2' },
+                { icon: 'fa-gear', label: 'Settings' },
+            ],
+            coach: [
+                { section: 'Main' },
+                { icon: 'fa-grid-2', label: 'Dashboard', active: true },
+                { icon: 'fa-futbol', label: 'Tournaments' },
+                { icon: 'fa-users', label: 'My Teams' },
+                { icon: 'fa-user-plus', label: 'Roster Management' },
+                { icon: 'fa-calendar-days', label: 'Schedule' },
+                { section: 'Analytics' },
+                { icon: 'fa-chart-line', label: 'Performance' },
+                { icon: 'fa-clipboard-list', label: 'Match Reports' },
+                { section: 'Account' },
+                { icon: 'fa-credit-card', label: 'Payments', badge: '1' },
+                { icon: 'fa-gear', label: 'Settings' },
+            ],
+            admin: [
+                { section: 'Overview' },
+                { icon: 'fa-grid-2', label: 'Dashboard', active: true },
+                { icon: 'fa-chart-pie', label: 'Analytics' },
+                { section: 'Management' },
+                { icon: 'fa-futbol', label: 'Tournaments', badge: '5' },
+                { icon: 'fa-users', label: 'Users' },
+                { icon: 'fa-building', label: 'Teams' },
+                { icon: 'fa-calendar-days', label: 'Schedule' },
+                { section: 'System' },
+                { icon: 'fa-credit-card', label: 'Payments' },
+                { icon: 'fa-shield-halved', label: 'Roles & Perms' },
+                { icon: 'fa-gear', label: 'Settings' },
+            ]
+        };
+
+        const navItems = navConfigs[user.role] || navConfigs.player;
+        const sidebarNav = document.getElementById('sidebarNav');
+        navItems.forEach(item => {
+            if (item.section) {
+                const label = document.createElement('div');
+                label.className = 'nav-section-label';
+                label.textContent = item.section;
+                sidebarNav.appendChild(label);
+            } else {
+                const link = document.createElement('a');
+                link.className = 'nav-item' + (item.active ? ' active' : '');
+                link.href = '#';
+                link.innerHTML = `<i class="fas ${item.icon}"></i>${item.label}${item.badge ? `<span class="badge">${item.badge}</span>` : ''}`;
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    sidebarNav.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                    link.classList.add('active');
+                });
+                sidebarNav.appendChild(link);
+            }
+        });
+
+        // ── Quick action buttons (role-based) ──
+        const quickActionsConfig = {
+            player: [
+                { icon: 'fa-magnifying-glass', label: 'Find Tournament', primary: true },
+                { icon: 'fa-users', label: 'Join Team' },
+                { icon: 'fa-chart-line', label: 'View Stats' },
+            ],
+            coach: [
+                { icon: 'fa-plus', label: 'Create Team', primary: true },
+                { icon: 'fa-user-plus', label: 'Add Player' },
+                { icon: 'fa-clipboard-list', label: 'Match Report' },
+            ],
+            admin: [
+                { icon: 'fa-plus', label: 'New Tournament', primary: true },
+                { icon: 'fa-user-plus', label: 'Add User' },
+                { icon: 'fa-download', label: 'Export Data' },
+            ]
+        };
+        const quickActionsEl = document.getElementById('quickActions');
+        (quickActionsConfig[user.role] || quickActionsConfig.player).forEach(btn => {
+            const el = document.createElement('button');
+            el.className = 'quick-btn' + (btn.primary ? ' primary' : '');
+            el.innerHTML = `<i class="fas ${btn.icon}"></i> ${btn.label}`;
+            el.addEventListener('click', () => showToast(`${btn.label} action triggered!`, 'success'));
+            quickActionsEl.appendChild(el);
+        });
+
+        // ── Summary cards (role-based data) ──
+        const summaryConfigs = {
+            player: [
+                { icon: 'fa-users', label: 'My Teams', value: 3, trend: '+1', trendDir: 'up', color: 'card-orange' },
+                { icon: 'fa-futbol', label: 'Tournaments', value: 7, trend: '+2', trendDir: 'up', color: 'card-cyan' },
+                { icon: 'fa-calendar-days', label: 'Upcoming Matches', value: 4, trend: '', color: 'card-green' },
+                { icon: 'fa-credit-card', label: 'Pending Payments', value: 2, trend: '', color: 'card-purple' },
+            ],
+            coach: [
+                { icon: 'fa-users', label: 'My Teams', value: 5, trend: '+2', trendDir: 'up', color: 'card-orange' },
+                { icon: 'fa-futbol', label: 'Active Tournaments', value: 3, trend: '+1', trendDir: 'up', color: 'card-cyan' },
+                { icon: 'fa-user', label: 'Total Players', value: 47, trend: '+5', trendDir: 'up', color: 'card-green' },
+                { icon: 'fa-chart-line', label: 'Win Rate', value: '72%', trend: '+3%', trendDir: 'up', color: 'card-purple' },
+            ],
+            admin: [
+                { icon: 'fa-futbol', label: 'Total Tournaments', value: 24, trend: '+4', trendDir: 'up', color: 'card-orange' },
+                { icon: 'fa-users', label: 'Total Users', value: 312, trend: '+28', trendDir: 'up', color: 'card-cyan' },
+                { icon: 'fa-building', label: 'Active Teams', value: 58, trend: '+6', trendDir: 'up', color: 'card-green' },
+                { icon: 'fa-credit-card', label: 'Revenue', value: '$12.4k', trend: '+18%', trendDir: 'up', color: 'card-purple' },
+            ]
+        };
+
+        const summaryGrid = document.getElementById('summaryGrid');
+        (summaryConfigs[user.role] || summaryConfigs.player).forEach((card, i) => {
+            const el = document.createElement('div');
+            el.className = `summary-card ${card.color}`;
+            el.style.animation = `fadeInUp 0.5s cubic-bezier(0.16,1,0.3,1) ${0.08 + i * 0.08}s both`;
+            el.innerHTML = `
+                <div class="card-icon"><i class="fas ${card.icon}"></i></div>
+                <div class="card-value" data-target="${card.value}">${card.value}</div>
+                <div class="card-label">${card.label}</div>
+                ${card.trend ? `<div class="card-trend ${card.trendDir}"><i class="fas fa-arrow-${card.trendDir}"></i> ${card.trend}</div>` : ''}
+            `;
+            summaryGrid.appendChild(el);
+        });
+
+        // ── Animated counter ──
+        document.querySelectorAll('.card-value').forEach(el => {
+            const target = el.dataset.target;
+            if (target && !isNaN(parseInt(target)) && !target.includes('$')) {
+                const end = parseInt(target);
+                let current = 0;
+                const step = Math.ceil(end / 40);
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= end) { current = end; clearInterval(timer); }
+                    el.textContent = current;
+                }, 30);
+            }
+        });
+
+        // ── Matches data ──
+        const matches = [
+            { team1: 'Thunder Hawks', c1: '#f97316', team2: 'Storm Riders', c2: '#06b6d4', score: '3 - 2', date: 'Today, 6:00 PM', status: 'live' },
+            { team1: 'Iron Wolves', c1: '#8b5cf6', team2: 'Blazing Eagles', c2: '#ef4444', score: '—', date: 'Tomorrow, 4:00 PM', status: 'upcoming' },
+            { team1: 'Golden Lions', c1: '#eab308', team2: 'Shadow Panthers', c2: '#22c55e', score: '—', date: 'Dec 22, 7:00 PM', status: 'upcoming' },
+            { team1: 'Arctic Foxes', c1: '#06b6d4', team2: 'Red Phoenix', c2: '#ef4444', score: '5 - 1', date: 'Yesterday', status: 'completed' },
+            { team1: 'Silver Sharks', c1: '#94a3b8', team2: 'Crimson Bears', c2: '#dc2626', score: '2 - 2', date: 'Dec 18', status: 'completed' },
+        ];
+
+        const matchesTable = document.getElementById('matchesTable');
+        matchesTable.innerHTML = `
+            <thead>
+                <tr><th>Match</th><th>Score</th><th>Date</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                ${matches.map(m => `
+                    <tr>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:0.5rem;">
+                                <div class="team-cell">
+                                    <div class="team-flag" style="background:${m.c1}">${m.team1.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+                                    <span>${m.team1}</span>
+                                </div>
+                                <span style="color:var(--text-muted);font-size:0.75rem;">vs</span>
+                                <div class="team-cell">
+                                    <div class="team-flag" style="background:${m.c2}">${m.team2.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+                                    <span>${m.team2}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><div class="match-score">${m.score}</div></td>
+                        <td style="color:var(--text-muted);font-size:0.82rem;">${m.date}</td>
+                        <td><span class="status-badge ${m.status}">${m.status.charAt(0).toUpperCase() + m.status.slice(1)}</span></td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        `;
+
+        // ── Notifications ──
+        const notifications = [
+            { text: 'Your match against Storm Riders starts in 30 minutes.', time: '5 min ago', read: false },
+            { text: 'Coach Mike added you to the starting lineup for Saturday.', time: '1 hour ago', read: false },
+            { text: 'Payment of $25 received for Winter Cup registration.', time: '3 hours ago', read: false },
+            { text: 'Tournament "Spring League" registration is now open.', time: 'Yesterday', read: true },
+        ];
+
+        const notifsList = document.getElementById('notificationsList');
+        notifications.forEach(n => {
+            const el = document.createElement('div');
+            el.className = 'notif-item' + (n.read ? ' read' : '');
+            el.innerHTML = `
+                <div class="notif-dot"></div>
+                <div class="notif-content">
+                    <div class="notif-text">${n.text}</div>
+                    <div class="notif-time">${n.time}</div>
+                </div>
+            `;
+            el.addEventListener('click', () => {
+                el.classList.add('read');
+                showToast('Notification marked as read.', 'success');
+            });
+            notifsList.appendChild(el);
+        });
+
+        document.getElementById('markAllRead').addEventListener('click', () => {
+            notifsList.querySelectorAll('.notif-item').forEach(n => n.classList.add('read'));
+            showToast('All notifications marked as read.', 'success');
+        });
+
+        // ── Activity ──
+        const activities = [
+            { icon: 'fa-futbol', color: 'var(--accent)', bg: 'rgba(249,115,22,0.12)', title: 'Registered for Winter Cup 2024', time: '2 hours ago' },
+            { icon: 'fa-users', color: 'var(--info)', bg: 'rgba(6,182,212,0.12)', title: 'Joined team "Thunder Hawks"', time: '5 hours ago' },
+            { icon: 'fa-credit-card', color: 'var(--success)', bg: 'rgba(34,197,94,0.12)', title: 'Paid tournament entry fee — $25', time: 'Yesterday' },
+            { icon: 'fa-medal', color: '#eab308', bg: 'rgba(234,179,8,0.12)', title: 'Reached 10th position on leaderboard', time: '2 days ago' },
+        ];
+
+        const activityList = document.getElementById('activityList');
+        activities.forEach(a => {
+            const el = document.createElement('div');
+            el.className = 'activity-item';
+            el.innerHTML = `
+                <div class="act-icon" style="background:${a.bg};color:${a.color};"><i class="fas ${a.icon}"></i></div>
+                <div class="act-text">
+                    <div class="act-title">${a.title}</div>
+                    <div class="act-time">${a.time}</div>
+                </div>
+            `;
+            activityList.appendChild(el);
+        });
+
+        // ── Sidebar toggle (mobile) ──
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const hamburger = document.getElementById('hamburger');
+
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        });
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        // ── Logout ──
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('sportTourneyUser');
+            showToast('Logged out successfully. Redirecting...', 'success');
+            setTimeout(() => { window.location.href = 'register.html'; }, 1800);
+        });
+
+        // ── Notification bell ──
+        document.getElementById('notifBtn').addEventListener('click', () => {
+            showToast('You have 3 unread notifications.', 'success');
+        });
+
+        // ── Toast ──
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+            toast.innerHTML = `<i class="fas ${icon}"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('toast-out');
+                toast.addEventListener('animationend', () => toast.remove());
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
