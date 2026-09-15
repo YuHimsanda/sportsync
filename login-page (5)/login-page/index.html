@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign In | SportsSync</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --primary: #1565C0;
+    --primary-dark: #0D47A1;
+    --primary-light: #E3F0FC;
+    --accent: #FF6D00;
+    --accent-dark: #E65100;
+    --accent-soft: rgba(255, 109, 0, 0.12);
+    --bg: #F5F7FA;
+    --text: #1F2937;
+    --text-soft: #6B7280;
+    --border: #E5E7EB;
+    --border-focus: #1565C0;
+    --white: #FFFFFF;
+    --shadow-sm: 0 1px 2px rgba(31, 41, 55, 0.04);
+    --shadow-md: 0 4px 16px rgba(31, 41, 55, 0.08);
+    --shadow-lg: 0 20px 50px rgba(21, 101, 192, 0.18);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+
+  /* ============ LEFT: FORM PANEL ============ */
+  .form-panel {
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    padding: 36px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-panel::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(255, 109, 0, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 60px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .brand-logo {
+    height: 36px;
+    width: auto;
+    display: block;
+  }
+
+  .topbar-link {
+    font-size: 13.5px;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+
+  .topbar-link a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+    transition: color .2s ease;
+  }
+  .topbar-link a:hover { color: var(--accent); }
+
+  /* Form container */
+  .form-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 6px 12px;
+    border-radius: 999px;
+    width: fit-content;
+    margin-bottom: 18px;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(255, 109, 0, 0.2);
+  }
+
+  .form-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .form-subtitle {
+    font-size: 15px;
+    color: var(--text-soft);
+    line-height: 1.55;
+    margin-bottom: 36px;
+  }
+
+  /* Field */
+  .field {
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .field-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .field-label label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .field-label .mini-link {
+    font-size: 12.5px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color .2s;
+  }
+  .field-label .mini-link:hover { color: var(--accent); }
+
+  .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-wrap .input-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--text-soft);
+    display: flex;
+    pointer-events: none;
+    transition: color .2s;
+  }
+  .input-wrap .input-icon svg { width: 18px; height: 18px; }
+
+  .input {
+    width: 100%;
+    height: 52px;
+    padding: 0 14px 0 44px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+    font-size: 14.5px;
+    font-family: inherit;
+    color: var(--text);
+    transition: border-color .2s, background .2s, box-shadow .2s;
+    outline: none;
+  }
+
+  .input::placeholder { color: #9CA3AF; }
+
+  .input:hover { border-color: #CBD5E1; }
+
+  .input:focus {
+    border-color: var(--border-focus);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.12);
+  }
+
+  .input:focus ~ .input-icon { color: var(--primary); }
+
+  .pwd-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-soft);
+    display: flex;
+    padding: 6px;
+    border-radius: 6px;
+    transition: color .2s, background .2s;
+  }
+  .pwd-toggle:hover { color: var(--primary); background: var(--primary-light); }
+  .pwd-toggle svg { width: 18px; height: 18px; }
+
+  /* Row */
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    margin-top: -4px;
+  }
+
+  .checkbox {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .checkbox input { display: none; }
+
+  .checkbox .box {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 5px;
+    background: var(--white);
+    display: grid;
+    place-items: center;
+    transition: all .2s;
+  }
+
+  .checkbox .box svg {
+    width: 12px; height: 12px;
+    color: #fff;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all .2s;
+  }
+
+  .checkbox input:checked + .box {
+    background: var(--primary);
+    border-color: var(--primary);
+  }
+  .checkbox input:checked + .box svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .checkbox .label-text {
+    font-size: 13.5px;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+
+  /* Buttons */
+  .btn {
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    transition: transform .15s ease, box-shadow .25s ease, background .2s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(21, 101, 192, 0.32);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+
+  .btn-primary span {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(21, 101, 192, 0.42);
+  }
+  .btn-primary:hover::before { opacity: 1; }
+
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-primary svg { width: 17px; height: 17px; }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 24px 0;
+    color: var(--text-soft);
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+  .divider::before, .divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .btn-google {
+    background: var(--white);
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-google:hover {
+    border-color: #CBD5E1;
+    background: #FAFBFC;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  .btn-google svg { width: 20px; height: 20px; }
+
+  /* Footer */
+  .form-footer {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 13.5px;
+    color: var(--text-soft);
+  }
+  .form-footer a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 4px;
+    transition: color .2s;
+  }
+  .form-footer a:hover { color: var(--accent); }
+
+  /* Legal footer */
+  .legal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+  .legal-links { display: flex; gap: 18px; }
+  .legal-links a {
+    color: var(--text-soft);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .legal-links a:hover { color: var(--primary); }
+
+  /* ============ RIGHT: VISUAL PANEL ============ */
+  .visual-panel {
+    position: relative;
+    background: linear-gradient(135deg, #0D47A1 0%, #1565C0 50%, #1976D2 100%);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 44px;
+  }
+
+  /* Decorative shapes */
+  .visual-panel::before {
+    content: "";
+    position: absolute;
+    top: -10%;
+    right: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(255, 109, 0, 0.25) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .visual-panel::after {
+    content: "";
+    position: absolute;
+    bottom: -20%;
+    left: -10%;
+    width: 70%;
+    height: 70%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .grid-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  .visual-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .visual-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .badge-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .badge-live .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(255, 109, 0, 0.3);
+    animation: pulse 1.8s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 109, 0, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(255, 109, 0, 0); }
+  }
+
+  .stats-chip {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
+    padding: 10px 14px;
+    text-align: right;
+    color: #fff;
+  }
+  .stats-chip .num {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .stats-chip .num span { color: var(--accent); }
+  .stats-chip .lbl {
+    font-size: 11px;
+    opacity: 0.85;
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  /* GIF container */
+  .gif-stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 0;
+  }
+
+  .gif-frame {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 16 / 9;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow:
+      0 24px 60px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    transform-style: preserve-3d;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .gif-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Accent stripe under gif */
+  .gif-frame::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--accent) 0%, transparent 50%, var(--accent) 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  /* Floating cards */
+  .float-card {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+    animation: floatCard 5s ease-in-out infinite;
+  }
+
+  .float-card.card-a {
+    top: 6%;
+    left: -2%;
+    animation-delay: 0s;
+  }
+  .float-card.card-b {
+    bottom: 6%;
+    right: -2%;
+    animation-delay: 1.5s;
+  }
+
+  @keyframes floatCard {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .float-card .icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+  .float-card .icon svg { width: 14px; height: 14px; color: #fff; }
+  .float-card .icon.orange { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%); }
+  .float-card .icon.blue { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
+
+  .float-card .txt .t1 {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .float-card .txt .t2 {
+    font-size: 10px;
+    color: var(--text-soft);
+    margin-top: 2px;
+  }
+
+  /* Bottom caption */
+  .visual-bottom {
+    margin-top: 16px;
+    color: #fff;
+  }
+
+  .visual-tagline {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    max-width: 90%;
+  }
+  .visual-tagline span { color: var(--accent); }
+
+  .visual-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .visual-meta .dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); }
+
+  /* ============ Direction D: Animated Background ============ */
+  .particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .particle {
+    position: absolute;
+    bottom: -20px;
+    border-radius: 50%;
+    opacity: 0;
+    animation: drift linear infinite;
+  }
+  .particle.white { background: rgba(255, 255, 255, 0.6); }
+  .particle.orange {
+    background: rgba(255, 109, 0, 0.85);
+    box-shadow: 0 0 8px rgba(255, 109, 0, 0.6);
+  }
+  @keyframes drift {
+    0%   { transform: translateY(0) translateX(0) scale(0.6); opacity: 0; }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.7; }
+    100% { transform: translateY(-110vh) translateX(40px) scale(1); opacity: 0; }
+  }
+
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .glow-orb.orb-1 {
+    width: 340px; height: 340px;
+    background: radial-gradient(circle, rgba(255, 109, 0, 0.32) 0%, transparent 70%);
+    top: 18%; left: 12%;
+    animation: orbMove1 14s ease-in-out infinite;
+  }
+  .glow-orb.orb-2 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.14) 0%, transparent 70%);
+    bottom: 8%; right: 6%;
+    animation: orbMove2 18s ease-in-out infinite;
+  }
+  @keyframes orbMove1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(50px, -40px) scale(1.18); }
+  }
+  @keyframes orbMove2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(-40px, 30px) scale(0.88); }
+  }
+
+  /* ============ Direction A: Live Scoreboard (top-center) ============ */
+  .visual-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .visual-top .badge-live { justify-self: start; }
+  .visual-top .stats-chip { justify-self: end; }
+
+  .scoreboard {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .scoreboard .team { display: flex; align-items: center; gap: 6px; }
+  .scoreboard .team .badge {
+    width: 22px; height: 22px;
+    border-radius: 5px;
+    display: grid;
+    place-items: center;
+    font-size: 9px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0;
+  }
+  .scoreboard .team.lal .badge { background: linear-gradient(135deg, #552583 0%, #7B3FBF 100%); }
+  .scoreboard .team.bos .badge { background: linear-gradient(135deg, #007A33 0%, #00A34D 100%); }
+  .scoreboard .team .pts { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; }
+  .scoreboard .vs { color: rgba(255, 255, 255, 0.4); font-size: 10.5px; font-weight: 600; }
+  .scoreboard .clock {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-left: 12px;
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--accent);
+    font-size: 11.5px;
+  }
+  .scoreboard .clock .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 109, 0, 0.3);
+    animation: pulse 1.6s infinite;
+  }
+  .scoreboard .clock #gameClock { color: #fff; font-weight: 800; }
+
+  /* ============ Direction A: Shot Clock (far-right edge) ============ */
+  .shot-clock {
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    z-index: 3;
+  }
+  .shot-clock .fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, var(--accent) 0%, #FFB74D 100%);
+    border-radius: 999px;
+    animation: shotClock 14s linear infinite;
+  }
+  @keyframes shotClock {
+    0%   { height: 100%; }
+    100% { height: 0%; }
+  }
+  .shot-clock .label {
+    display: none;
+  }
+  .shot-clock .count {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  /* ============ Direction E: Achievement Badges Row ============ */
+  .badges-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .badge-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 11px 6px 6px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all .25s ease;
+    cursor: default;
+  }
+  .badge-pill:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 109, 0, 0.5);
+    box-shadow: 0 8px 18px rgba(255, 109, 0, 0.22);
+  }
+  .badge-pill .ico {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+  .badge-pill .ico svg { width: 12px; height: 12px; color: #fff; }
+  .badge-pill .ico.gold { background: linear-gradient(135deg, #FFB300 0%, #FF6D00 100%); }
+  .badge-pill .ico.fire { background: linear-gradient(135deg, #FF5722 0%, #C62828 100%); }
+  .badge-pill .ico.blue { background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%); }
+  .badge-pill .ico.green { background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%); }
+  .badge-pill .txt { display: flex; flex-direction: column; line-height: 1.15; }
+  .badge-pill .txt .sub { font-size: 9px; opacity: 0.7; font-weight: 500; margin-top: 1px; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 500;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s ease;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .toast svg { width: 16px; height: 16px; color: var(--accent); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 980px) {
+    .page { grid-template-columns: 1fr; }
+    .visual-panel { display: none; }
+    .form-panel { padding: 28px 24px; }
+    .form-title { font-size: 30px; }
+    .topbar { margin-bottom: 32px; }
+  }
+
+  @media (max-width: 480px) {
+    .form-panel { padding: 24px 20px; }
+    .form-title { font-size: 26px; }
+    .legal { flex-direction: column; gap: 10px; }
+  }
+
+  /* Entrance animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .anim { animation: fadeUp .6s ease both; }
+  .anim-1 { animation-delay: .05s; }
+  .anim-2 { animation-delay: .12s; }
+  .anim-3 { animation-delay: .19s; }
+  .anim-4 { animation-delay: .26s; }
+  .anim-5 { animation-delay: .33s; }
+  .anim-6 { animation-delay: .40s; }
+  .anim-7 { animation-delay: .47s; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- ============ LEFT PANEL: FORM ============ -->
+  <section class="form-panel">
+    <!-- Topbar -->
+    <header class="topbar anim anim-1">
+      <div class="brand">
+        <img src="assets/sportsync-logo.png" alt="SportsSync" class="brand-logo" />
+      </div>
+      <div class="topbar-link">
+        New here?<a href="#" id="signupTop">Sign up for free</a>
+      </div>
+    </header>
+
+    <!-- Form -->
+    <div class="form-wrap">
+      <div class="eyebrow anim anim-2">Welcome back</div>
+      <h1 class="form-title anim anim-3">Sign in to your<br/>account</h1>
+      <div class="form-subtitle anim anim-3">
+        Pick up right where you left off. Your stats, highlights and
+        bracket picks are waiting.
+      </div>
+
+      <form id="loginForm" novalidate>
+        <!-- Email -->
+        <div class="field anim anim-4">
+          <div class="field-label">
+            <label for="email">Email address</label>
+          </div>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2.5"/>
+                <path d="m3 7 9 6 9-6"/>
+              </svg>
+            </span>
+            <input type="email" id="email" class="input" placeholder="you@sportsync.com" autocomplete="email" required />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="field anim anim-5">
+          <div class="field-label">
+            <label for="password">Password</label>
+            <a href="#" class="mini-link" id="forgotLink">Forgot password?</a>
+          </div>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="16" height="10" rx="2.5"/>
+                <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+              </svg>
+            </span>
+            <input type="password" id="password" class="input" placeholder="Enter your password" autocomplete="current-password" required />
+            <button type="button" class="pwd-toggle" id="pwdToggle" aria-label="Show password">
+              <svg id="eyeOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg id="eyeClosed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                <path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.5 0 10 8 10 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                <path d="M6.6 6.6A18.5 18.5 0 0 0 2 12s3.5 7 10 7a9.1 9.1 0 0 0 5-1.5"/>
+                <path d="m2 2 20 20"/>
+                <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Row: remember + link -->
+        <div class="row anim anim-6">
+          <label class="checkbox">
+            <input type="checkbox" id="remember" checked />
+            <span class="box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </span>
+            <span class="label-text">Keep me signed in</span>
+          </label>
+        </div>
+
+        <!-- Sign in button -->
+        <button type="submit" class="btn btn-primary anim anim-6">
+          <span>
+            Sign in
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
+          </span>
+        </button>
+
+        <!-- Divider -->
+        <div class="divider anim anim-7">or continue with</div>
+
+        <!-- Google -->
+        <button type="button" class="btn btn-google anim anim-7" id="googleBtn">
+          <svg viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1Z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z"/>
+            <path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84Z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38Z"/>
+          </svg>
+          Sign in with Google
+        </button>
+      </form>
+
+      <!-- Footer link -->
+      <p class="form-footer anim anim-7">
+        Don't have an account?<a href="#" id="signupBottom">Sign up for free!</a>
+      </p>
+    </div>
+
+    <!-- Legal footer -->
+    <footer class="legal">
+      <div>© 2026 SportsSync Inc.</div>
+      <div class="legal-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Support</a>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ============ RIGHT PANEL: VISUAL ============ -->
+  <aside class="visual-panel">
+    <div class="grid-pattern"></div>
+
+    <!-- Direction D: Background effects -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Direction A: Shot clock (right edge) -->
+    <div class="shot-clock" title="Shot clock">
+      <span class="label">Shot Clock</span>
+      <div class="fill"></div>
+      <span class="count" id="shotCount">14</span>
+    </div>
+
+    <div class="visual-content">
+      <!-- Top row: badge / scoreboard / stats -->
+      <div class="visual-top">
+        <div class="badge-live">
+          <span class="dot"></span>
+          LIVE • GAME NIGHT
+        </div>
+        <div class="scoreboard" title="Live game">
+          <div class="team lal">
+            <span class="badge">LAL</span>
+            <span class="pts">84</span>
+          </div>
+          <span class="vs">vs</span>
+          <div class="team bos">
+            <span class="badge">BOS</span>
+            <span class="pts">76</span>
+          </div>
+          <div class="clock">
+            <span class="dot"></span>
+            Q3 <span id="gameClock">4:12</span>
+          </div>
+        </div>
+        <div class="stats-chip">
+          <div class="num">12.4<span>K</span></div>
+          <div class="lbl">FANS ONLINE</div>
+        </div>
+      </div>
+
+      <!-- GIF Stage -->
+      <div class="gif-stage">
+        <!-- Floating card A -->
+        <div class="float-card card-a">
+          <div class="icon orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/>
+            </svg>
+          </div>
+          <div class="txt">
+            <div class="t1">Slam Dunk!</div>
+            <div class="t2">+25 pts scored</div>
+          </div>
+        </div>
+
+        <div class="gif-frame">
+          <img src="assets/dunk.gif" alt="Basketball dunk highlight reel" />
+        </div>
+
+        <!-- Floating card B -->
+        <div class="float-card card-b">
+          <div class="icon blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3v18h18"/>
+              <path d="m7 14 3-4 4 3 5-7"/>
+            </svg>
+          </div>
+          <div class="txt">
+            <div class="t1">Top 1% Bracket</div>
+            <div class="t2">You're crushing it</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direction E: Achievement Badges Row -->
+      <div class="badges-row">
+        <div class="badge-pill" title="Signed in 7 days in a row">
+          <div class="ico gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 21h8"/>
+              <path d="M12 17v4"/>
+              <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/>
+              <path d="M5 4h2v3a3 3 0 0 1-2-3Z"/>
+              <path d="M17 4h2v3a3 3 0 0 1-2-3Z"/>
+            </svg>
+          </div>
+          <div class="txt">7-Day Streak<span class="sub">On fire</span></div>
+        </div>
+        <div class="badge-pill" title="8 of last 10 picks correct">
+          <div class="ico fire">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2c1 4 4 5 4 9a4 4 0 0 1-8 0c0-2 1-3 2-4-2 0-4 2-4 5a6 6 0 0 0 12 0c0-6-4-8-6-10Z"/>
+            </svg>
+          </div>
+          <div class="txt">Hot Picks<span class="sub">8/10 correct</span></div>
+        </div>
+        <div class="badge-pill" title="Top 5% bracket this week">
+          <div class="ico blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3v18h18"/>
+              <path d="m7 14 3-4 4 3 5-7"/>
+            </svg>
+          </div>
+          <div class="txt">Top 5% Bracket<span class="sub">This week</span></div>
+        </div>
+        <div class="badge-pill" title="120 min of live games today">
+          <div class="ico green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <div class="txt">Live Watcher<span class="sub">120 min today</span></div>
+        </div>
+      </div>
+
+      <!-- Bottom tagline -->
+      <div class="visual-bottom">
+        <div class="visual-tagline">
+          Where every play<br/>becomes a <span>moment.</span>
+        </div>
+        <div class="visual-meta">
+          <span>Real-time highlights</span>
+          <span class="dot"></span>
+          <span>Live brackets</span>
+          <span class="dot"></span>
+          <span>Community picks</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+    <polyline points="22 4 12 14.01 9 11.01"/>
+  </svg>
+  <span id="toastMsg">Welcome back! Signing you in…</span>
+</div>
+
+<script>
+  // Password toggle
+  const pwdToggle = document.getElementById('pwdToggle');
+  const pwd = document.getElementById('password');
+  const eyeOpen = document.getElementById('eyeOpen');
+  const eyeClosed = document.getElementById('eyeClosed');
+
+  pwdToggle.addEventListener('click', () => {
+    const isHidden = pwd.type === 'password';
+    pwd.type = isHidden ? 'text' : 'password';
+    eyeOpen.style.display = isHidden ? 'none' : 'block';
+    eyeClosed.style.display = isHidden ? 'block' : 'none';
+    pwdToggle.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+  });
+
+  // Toast helper
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  let toastTimer;
+  function showToast(msg, ms = 2600) {
+    toastMsg.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), ms);
+  }
+
+  // Form submit
+  const form = document.getElementById('loginForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = pwd.value;
+
+    if (!email) {
+      showToast('Please enter your email address.');
+      document.getElementById('email').focus();
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showToast('That email doesn\'t look right. Try again.');
+      document.getElementById('email').focus();
+      return;
+    }
+    if (!password || password.length < 6) {
+      showToast('Password must be at least 6 characters.');
+      pwd.focus();
+      return;
+    }
+
+    const btn = form.querySelector('.btn-primary span');
+    btn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="width:17px;height:17px;animation:spin 1s linear infinite">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+      </svg>
+      Signing in…
+    `;
+    showToast('Welcome back! Signing you in…');
+
+    setTimeout(() => {
+      btn.innerHTML = `
+        Sign in
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/>
+          <path d="m12 5 7 7-7 7"/>
+        </svg>
+      `;
+    }, 2200);
+  });
+
+  // Auxiliary links
+  document.getElementById('forgotLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    showToast('Password reset link sent to your email.');
+  });
+  ['signupTop', 'signupBottom'].forEach(id => {
+    document.getElementById(id).addEventListener('click', (e) => {
+      e.preventDefault();
+      showToast('Sign-up flow coming up — stay tuned!');
+    });
+  });
+  document.getElementById('googleBtn').addEventListener('click', () => {
+    showToast('Redirecting to Google sign-in…');
+  });
+
+  // ===== Direction D: Generate floating particles =====
+  const particlesEl = document.getElementById('particles');
+  const pColors = ['white', 'orange'];
+  for (let i = 0; i < 14; i++) {
+    const p = document.createElement('span');
+    p.className = 'particle ' + pColors[Math.floor(Math.random() * pColors.length)];
+    const size = 2 + Math.random() * 4;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (10 + Math.random() * 12) + 's';
+    p.style.animationDelay = -(Math.random() * 18) + 's';
+    particlesEl.appendChild(p);
+  }
+
+  // ===== Direction A: Live game clock countdown =====
+  let gameSeconds = 4 * 60 + 12; // Q3, 4:12
+  const clockEl = document.getElementById('gameClock');
+  setInterval(() => {
+    if (gameSeconds > 0) gameSeconds--;
+    const m = Math.floor(gameSeconds / 60);
+    const s = (gameSeconds % 60).toString().padStart(2, '0');
+    clockEl.textContent = m + ':' + s;
+    if (gameSeconds === 0) gameSeconds = 12 * 60; // reset to next quarter
+  }, 1000);
+
+  // ===== Direction A: Shot clock countdown (14s loop) =====
+  const shotCountEl = document.getElementById('shotCount');
+  let shotSeconds = 14;
+  setInterval(() => {
+    shotSeconds--;
+    if (shotSeconds < 0) shotSeconds = 14;
+    shotCountEl.textContent = shotSeconds;
+  }, 1000);
+
+  // Spinner keyframe injection
+  const style = document.createElement('style');
+  style.textContent = `@keyframes spin { to { transform: rotate(360deg); } }`;
+  document.head.appendChild(style);
+</script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Match Management | SportsSync</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="">
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <a href="index.html"><img src="assets/sportsync-logo.png" alt="SportsSync" class="sidebar-logo" /></a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group">
+        <div class="nav-group-label">Oversight</div>
+        <a href="index.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
+          <span>Overview</span>
+        </a>
+        <a href="match-management.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h8l-1 8 11-12h-8l1-8z"/></svg>
+          <span>Match Management</span>
+        </a>
+        <a href="tournament.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6 M18 9h1.5a2.5 2.5 0 0 0 0-5H18 M4 22h16 M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22 M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22 M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+          <span>Tournament</span>
+        </a>
+        <a href="team.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Team</span>
+        </a>
+        <a href="court-operations.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20 M3 20V8l6-4 6 4v12 M15 20v-7l6-3v10 M9 20v-6h6v6"/></svg>
+          <span>Court Operations</span>
+        </a>
+        <a href="analytics.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18 M7 16l4-4 3 3 5-6"/></svg>
+          <span>Analytics</span>
+        </a>
+        <a href="ranking.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l3.5-3.5L19 15 M5 4v10l2-2 3 3 M3 21h18 M9 14l3 3 5-5"/></svg>
+          <span>Ranking</span>
+        </a>
+        <a href="transportation.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6 M16 6v6 M2 12h19.6 M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-.8-2.8c-.2-.9-.4-2-.4-3 0-3.3-2.7-6-6-6-3 0-5.4 2.2-5.9 5.1 M16 18v-2 M5 7c0-1.5.5-3 1.5-4"/></svg>
+          <span>Transportation</span>
+        </a>
+        <a href="security-center.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1Z M9 12l2 2 4-4"/></svg>
+          <span>Security Center</span>
+        </a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">Settings</div>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <span>Support</span>
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          <span>Logs</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="sys-status">
+        <span class="sys-dot"></span>
+        <div>
+          <div class="sys-title">All systems nominal</div>
+          <div class="sys-sub">12 ops online</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search matches, teams, or status..." />
+        <kbd>⌘K</kbd>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-btn" title="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+        <button class="icon-btn" title="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="badge-dot"></span>
+        </button>
+        <div class="profile">
+          <div class="profile-avatar">AK</div>
+          <div class="profile-meta">
+            <div class="profile-name">Alex Kerr</div>
+            <div class="profile-role">Ops Director</div>
+          </div>
+          <svg class="profile-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">Match Management</h1>
+          <p class="page-sub">World Cup 2026 Host Committee — New Jersey / New York Hub</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            List
+          </button>
+          <button class="btn-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Calendar
+          </button>
+          <button class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            Assign Staff
+          </button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="col-left">
+          <section class="card timeline-card">
+            <div class="card-head">
+              <div class="card-title">Match Timeline</div>
+              <div class="card-sub">Match 48 • Group C</div>
+            </div>
+            <div class="timeline-grid">
+              <div class="tl-item">
+                <div class="tl-icon goal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div>
+                <div class="tl-num">12</div>
+                <div class="tl-label">Goals <span>• M. Reyes</span></div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-icon yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+                <div class="tl-num">34</div>
+                <div class="tl-label">Yellow Cards <span>• C Halftime</span></div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-icon pause"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></div>
+                <div class="tl-num">45+2</div>
+                <div class="tl-label">Halftime <span>• Match paused</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card score-card">
+            <div class="score-head">
+              <div class="live-tag"><span class="live-dot"></span>LIVE</div>
+              <div class="match-tag">MATCH 48 • GROUP C</div>
+              <div class="venue">METLIFE STADIUM</div>
+              <a href="#" class="expand-link">Expand view
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              </a>
+            </div>
+
+            <div class="score-body">
+              <div class="team team-home">
+                <div class="team-crest" style="background:linear-gradient(135deg,#1565C0 0%,#0D47A1 100%);">SEN</div>
+                <div class="team-name">SENTINELS</div>
+              </div>
+              <div class="score-center">
+                <div class="score-num">0 : 1</div>
+                <div class="match-time">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  <span id="liveClock">90 + 4</span>
+                </div>
+              </div>
+              <div class="team team-away">
+                <div class="team-crest" style="background:linear-gradient(135deg,#FF6D00 0%,#E65100 100%);">PHX</div>
+                <div class="team-name">PHOENIX</div>
+              </div>
+            </div>
+
+            <div class="match-progress">
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 96%"></div>
+                <div class="progress-marker" style="left: 50%" data-label="HT"></div>
+                <div class="progress-marker live" style="left: 96%" data-label="LIVE"></div>
+              </div>
+              <div class="progress-labels">
+                <span>KICKOFF</span>
+                <span>HALFTIME</span>
+                <span>FULL TIME</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Recent Match Activity</div>
+                <div class="card-sub">Last 6 matches across all venues</div>
+              </div>
+              <a href="#" class="link">View all</a>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Match</th>
+                  <th>Score</th>
+                  <th>Venue</th>
+                  <th>Attendance</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="cell-teams">Sentinels vs Phoenix</div></td>
+                  <td><span class="cell-score">0 : 1</span></td>
+                  <td>MetLife Stadium</td>
+                  <td>81,422</td>
+                  <td><span class="pill pill-live">Live</span></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-teams">Thunder vs Cyclone</div></td>
+                  <td><span class="cell-score">2 : 2</span></td>
+                  <td>AT&T Stadium</td>
+                  <td>76,891</td>
+                  <td><span class="pill pill-done">Full Time</span></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-teams">Vipers vs Storm</div></td>
+                  <td><span class="cell-score">1 : 3</span></td>
+                  <td>SoFi Stadium</td>
+                  <td>72,540</td>
+                  <td><span class="pill pill-done">Full Time</span></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-teams">Sentinels vs Thunder</div></td>
+                  <td><span class="cell-score">2 : 1</span></td>
+                  <td>Mercedes-Benz</td>
+                  <td>71,200</td>
+                  <td><span class="pill pill-soon">Upcoming</span></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-teams">Phoenix vs Vipers</div></td>
+                  <td><span class="cell-score">— : —</span></td>
+                  <td>Arrowhead</td>
+                  <td>—</td>
+                  <td><span class="pill pill-soon">Upcoming</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+
+        <div class="col-right">
+          <section class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Operational Status</div>
+                <div class="card-sub">Live overview • 3 match operations</div>
+              </div>
+              <div class="dropdown">
+                <button class="dropdown-btn">Today
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="ops-body">
+              <div class="donut-wrap">
+                <svg viewBox="0 0 120 120" class="donut">
+                  <circle cx="60" cy="60" r="50" class="donut-bg"/>
+                  <circle cx="60" cy="60" r="50" class="donut-seg seg-1"/>
+                  <circle cx="60" cy="60" r="50" class="donut-seg seg-2"/>
+                  <circle cx="60" cy="60" r="50" class="donut-seg seg-3"/>
+                </svg>
+                <div class="donut-center">
+                  <div class="donut-num">98.7%</div>
+                  <div class="donut-label">Capacity</div>
+                </div>
+              </div>
+              <div class="ops-stats">
+                <div class="ops-stat">
+                  <div class="ops-stat-num">81,422 <span>/ 82,500</span></div>
+                  <div class="ops-stat-lbl">Attendance</div>
+                </div>
+                <div class="ops-legend">
+                  <div class="lg-row"><span class="lg-dot lg-blue"></span> Seated <strong>78,420</strong></div>
+                  <div class="lg-row"><span class="lg-dot lg-orange"></span> Hospitality <strong>2,102</strong></div>
+                  <div class="lg-row"><span class="lg-dot lg-teal"></span> Available <strong>1,078</strong></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="staff-list">
+              <div class="staff-row">
+                <div class="staff-info">
+                  <div class="staff-name">Referee Team</div>
+                  <div class="staff-sub">M. Oliver (UK)</div>
+                </div>
+                <span class="pill pill-blue">Assigned</span>
+              </div>
+              <div class="staff-row">
+                <div class="staff-info">
+                  <div class="staff-name">Staff Assigned</div>
+                  <div class="staff-sub">1,240 personnel</div>
+                </div>
+                <span class="pill pill-pink">Nominal</span>
+              </div>
+              <button class="btn-report">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Generate Report
+              </button>
+            </div>
+          </section>
+
+          <section class="card final-card">
+            <div class="card-head">
+              <div class="final-head">
+                <span class="live-dot red"></span>
+                <div class="card-title">Cup Final</div>
+              </div>
+              <div class="card-sub">July 18 • MetLife Stadium</div>
+            </div>
+
+            <div class="final-match">
+              <div class="final-row">
+                <div class="final-team">Winner SF1</div>
+                <div class="final-score">104 : 112</div>
+                <div class="final-team">Winner SF2</div>
+              </div>
+              <div class="final-meta">
+                <span class="pill pill-done">Full Time</span>
+                <span class="final-tag">FINAL</span>
+              </div>
+            </div>
+
+            <div class="final-divider"></div>
+
+            <div class="final-match">
+              <div class="final-row">
+                <div class="final-team">Loser SF1</div>
+                <div class="final-score">97 : 98</div>
+                <div class="final-team">Loser SF2</div>
+              </div>
+              <div class="final-meta">
+                <span class="pill pill-done">Full Time</span>
+                <span class="final-tag">3RD PLACE</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <span id="toastMsg">Action complete</span>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
