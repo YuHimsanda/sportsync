@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — SportTourney</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a12;
+            --bg-card: rgba(18, 18, 30, 0.85);
+            --accent: #f97316;
+            --accent-hover: #fb923c;
+            --accent-glow: rgba(249, 115, 22, 0.25);
+            --text: #eeeef2;
+            --text-muted: #7a7a9e;
+            --border: rgba(255, 255, 255, 0.07);
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #eab308;
+            --input-bg: rgba(255, 255, 255, 0.04);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --input-focus: rgba(249, 115, 22, 0.4);
+        }
+
+        html { font-size: 16px; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+        }
+
+        /* ── Animated background ── */
+        .bg-layer {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            overflow: hidden;
+        }
+        .bg-layer .orb {
+            position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.35;
+        }
+        .bg-layer .orb-1 {
+            width: 500px; height: 500px; background: #f97316;
+            top: -150px; left: -100px;
+            animation: orbFloat1 18s ease-in-out infinite;
+        }
+        .bg-layer .orb-2 {
+            width: 400px; height: 400px; background: #06b6d4;
+            bottom: -100px; right: -80px;
+            animation: orbFloat2 22s ease-in-out infinite;
+        }
+        .bg-layer .orb-3 {
+            width: 300px; height: 300px; background: #8b5cf6;
+            top: 50%; left: 40%;
+            animation: orbFloat3 15s ease-in-out infinite;
+        }
+        @keyframes orbFloat1 { 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(80px,60px); } }
+        @keyframes orbFloat2 { 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(-60px,-80px); } }
+        @keyframes orbFloat3 { 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(40px,-50px); } }
+
+        /* Grid dots */
+        .bg-dots {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        /* ── Left decorative panel ── */
+        .left-panel {
+            position: relative; z-index: 1;
+            width: 45%; min-height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 3rem;
+            overflow: hidden;
+        }
+        .left-panel .brand-area { text-align: center; position: relative; z-index: 2; }
+        .left-panel .logo-icon {
+            width: 80px; height: 80px; margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--accent), #fb923c);
+            border-radius: 20px; display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem; color: #fff;
+            box-shadow: 0 8px 32px var(--accent-glow);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%,100%{ box-shadow: 0 8px 32px var(--accent-glow); transform: scale(1); }
+            50%{ box-shadow: 0 12px 48px rgba(249,115,22,0.4); transform: scale(1.04); }
+        }
+        .left-panel h1 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900; font-size: 2.8rem; line-height: 1.1;
+            background: linear-gradient(135deg, #fff 40%, var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        .left-panel .tagline {
+            color: var(--text-muted); font-size: 1.05rem; line-height: 1.6;
+            max-width: 360px; margin: 0 auto 2.5rem;
+        }
+
+        /* Feature pills */
+        .feature-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; max-width: 380px; }
+        .feature-pills .pill {
+            display: flex; align-items: center; gap: 0.45rem;
+            background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+            padding: 0.5rem 0.9rem; border-radius: 100px;
+            font-size: 0.82rem; color: var(--text-muted);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s;
+        }
+        .feature-pills .pill i { color: var(--accent); font-size: 0.75rem; }
+        .feature-pills .pill:hover { background: rgba(249,115,22,0.1); border-color: rgba(249,115,22,0.3); color: var(--text); transform: translateY(-2px); }
+
+        /* Floating sport icons */
+        .float-icons { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+        .float-icons i {
+            position: absolute; color: rgba(255,255,255,0.04); font-size: 3rem;
+            animation: floatIcon 20s linear infinite;
+        }
+        .float-icons i:nth-child(1) { top: 8%; left: 12%; font-size: 2.5rem; animation-delay: 0s; }
+        .float-icons i:nth-child(2) { top: 25%; right: 15%; font-size: 3.5rem; animation-delay: -4s; }
+        .float-icons i:nth-child(3) { bottom: 30%; left: 8%; font-size: 2rem; animation-delay: -8s; }
+        .float-icons i:nth-child(4) { bottom: 10%; right: 10%; font-size: 4rem; animation-delay: -12s; }
+        .float-icons i:nth-child(5) { top: 55%; left: 25%; font-size: 2.2rem; animation-delay: -6s; }
+        @keyframes floatIcon {
+            0%{ transform: translateY(0) rotate(0deg); opacity: 0.5; }
+            50%{ transform: translateY(-20px) rotate(180deg); opacity: 1; }
+            100%{ transform: translateY(0) rotate(360deg); opacity: 0.5; }
+        }
+
+        /* ── Right form panel ── */
+        .right-panel {
+            position: relative; z-index: 1;
+            width: 55%; min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 2rem;
+        }
+        .form-container {
+            width: 100%; max-width: 480px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: formSlide 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        @keyframes formSlide {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .form-container h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800; font-size: 1.75rem; margin-bottom: 0.4rem;
+        }
+        .form-container .subtitle {
+            color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;
+        }
+
+        /* Input groups */
+        .input-group { margin-bottom: 1.2rem; position: relative; }
+        .input-group label {
+            display: block; font-size: 0.8rem; font-weight: 600;
+            color: var(--text-muted); margin-bottom: 0.4rem;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .input-wrapper {
+            position: relative; display: flex; align-items: center;
+        }
+        .input-wrapper i.field-icon {
+            position: absolute; left: 14px; color: var(--text-muted);
+            font-size: 0.9rem; transition: color 0.3s; pointer-events: none; z-index: 2;
+        }
+        .input-wrapper input,
+        .input-wrapper select {
+            width: 100%; padding: 0.8rem 0.9rem 0.8rem 2.6rem;
+            background: var(--input-bg); border: 1.5px solid var(--input-border);
+            border-radius: 12px; color: var(--text);
+            font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+            outline: none; transition: all 0.3s;
+            -webkit-appearance: none; appearance: none;
+        }
+        .input-wrapper select { cursor: pointer; padding-right: 2.5rem; }
+        .input-wrapper .select-arrow {
+            position: absolute; right: 14px; color: var(--text-muted);
+            font-size: 0.7rem; pointer-events: none; z-index: 2;
+        }
+        .input-wrapper input:focus,
+        .input-wrapper select:focus {
+            border-color: var(--accent); background: rgba(249,115,22,0.04);
+            box-shadow: 0 0 0 3px var(--input-focus);
+        }
+        .input-wrapper input:focus + i.field-icon,
+        .input-wrapper input:focus ~ i.field-icon { color: var(--accent); }
+
+        /* Validation states */
+        .input-group.error .input-wrapper input { border-color: var(--danger); }
+        .input-group.error .input-wrapper i.field-icon { color: var(--danger); }
+        .input-group.success .input-wrapper input { border-color: var(--success); }
+        .input-group.success .input-wrapper i.field-icon { color: var(--success); }
+        .error-msg {
+            font-size: 0.78rem; color: var(--danger); margin-top: 0.35rem;
+            display: none; align-items: center; gap: 0.3rem;
+        }
+        .error-msg i { font-size: 0.7rem; }
+        .input-group.error .error-msg { display: flex; }
+
+        /* Password strength */
+        .strength-bar { display: flex; gap: 4px; margin-top: 0.5rem; }
+        .strength-bar .bar {
+            flex: 1; height: 4px; border-radius: 4px;
+            background: rgba(255,255,255,0.08); transition: all 0.3s;
+        }
+        .strength-bar .bar.active.weak { background: var(--danger); }
+        .strength-bar .bar.active.medium { background: var(--warning); }
+        .strength-bar .bar.active.strong { background: var(--success); }
+        .strength-label {
+            font-size: 0.75rem; margin-top: 0.25rem; color: var(--text-muted);
+            min-height: 1rem;
+        }
+
+        /* Password toggle */
+        .pw-toggle {
+            position: absolute; right: 14px; color: var(--text-muted);
+            font-size: 0.85rem; cursor: pointer; z-index: 2;
+            transition: color 0.2s;
+        }
+        .pw-toggle:hover { color: var(--accent); }
+
+        /* Role cards */
+        .role-selector { display: flex; gap: 0.8rem; margin-bottom: 1.2rem; }
+        .role-card {
+            flex: 1; padding: 1rem; text-align: center;
+            background: var(--input-bg); border: 1.5px solid var(--input-border);
+            border-radius: 14px; cursor: pointer; transition: all 0.3s;
+            position: relative; overflow: hidden;
+        }
+        .role-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, var(--accent-glow), transparent);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .role-card:hover { border-color: rgba(249,115,22,0.3); transform: translateY(-2px); }
+        .role-card.active {
+            border-color: var(--accent); background: rgba(249,115,22,0.08);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .role-card.active::before { opacity: 1; }
+        .role-card i { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 0.5rem; display: block; transition: color 0.3s; position: relative; z-index: 1; }
+        .role-card.active i { color: var(--accent); }
+        .role-card span { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; position: relative; z-index: 1; transition: color 0.3s; }
+        .role-card.active span { color: var(--text); }
+        .role-card .role-check {
+            position: absolute; top: 8px; right: 8px; width: 20px; height: 20px;
+            background: var(--accent); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.6rem; color: #fff;
+            opacity: 0; transform: scale(0); transition: all 0.3s;
+        }
+        .role-card.active .role-check { opacity: 1; transform: scale(1); }
+
+        /* Submit button */
+        .btn-submit {
+            width: 100%; padding: 0.9rem; margin-top: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), #fb923c);
+            border: none; border-radius: 12px;
+            color: #fff; font-family: 'Outfit', sans-serif;
+            font-weight: 700; font-size: 1rem; letter-spacing: 0.02em;
+            cursor: pointer; position: relative; overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(249,115,22,0.4); }
+        .btn-submit:active { transform: translateY(0); }
+        .btn-submit.loading { pointer-events: none; }
+        .btn-submit .btn-text { transition: opacity 0.3s; }
+        .btn-submit.loading .btn-text { opacity: 0; }
+        .btn-submit .spinner {
+            position: absolute; top: 50%; left: 50%;
+            width: 22px; height: 22px; margin: -11px 0 0 -11px;
+            border: 2.5px solid rgba(255,255,255,0.3);
+            border-top-color: #fff; border-radius: 50%;
+            opacity: 0; animation: spin 0.6s linear infinite;
+        }
+        .btn-submit.loading .spinner { opacity: 1; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Ripple */
+        .btn-submit .ripple {
+            position: absolute; border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: scale(0); animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+        /* Links */
+        .form-footer {
+            text-align: center; margin-top: 1.5rem;
+            font-size: 0.88rem; color: var(--text-muted);
+        }
+        .form-footer a {
+            color: var(--accent); text-decoration: none; font-weight: 600;
+            transition: color 0.2s;
+        }
+        .form-footer a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+        /* Toast notification */
+        .toast-container {
+            position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999;
+            display: flex; flex-direction: column; gap: 0.6rem;
+        }
+        .toast {
+            padding: 0.9rem 1.2rem; border-radius: 12px;
+            background: rgba(18,18,30,0.95); border: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+            display: flex; align-items: center; gap: 0.7rem;
+            font-size: 0.88rem; color: var(--text);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            animation: toastIn 0.4s cubic-bezier(0.16,1,0.3,1) both;
+            max-width: 380px;
+        }
+        .toast.toast-out { animation: toastOut 0.3s ease both; }
+        .toast i { font-size: 1rem; }
+        .toast.success i { color: var(--success); }
+        .toast.error i { color: var(--danger); }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { to { opacity: 0; transform: translateX(40px); } }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .left-panel { width: 100%; min-height: auto; padding: 2.5rem 1.5rem 1.5rem; }
+            .left-panel h1 { font-size: 2rem; }
+            .right-panel { width: 100%; min-height: auto; padding: 1.5rem; }
+        }
+        @media (max-width: 500px) {
+            .form-container { padding: 1.5rem; border-radius: 18px; }
+            .role-selector { flex-direction: column; }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background layer -->
+    <div class="bg-layer">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="bg-dots"></div>
+
+    <!-- Left decorative panel -->
+    <div class="left-panel">
+        <div class="float-icons">
+            <i class="fas fa-futbol"></i>
+            <i class="fas fa-basketball"></i>
+            <i class="fas fa-table-tennis-paddle-ball"></i>
+            <i class="fas fa-volleyball"></i>
+            <i class="fas fa-medal"></i>
+        </div>
+        <div class="brand-area">
+            <div class="logo-icon"><i class="fas fa-trophy"></i></div>
+            <h1>SportTourney</h1>
+            <p class="tagline">The all-in-one platform to organize tournaments, manage teams, and track live scores — all from one dashboard.</p>
+            <div class="feature-pills">
+                <div class="pill"><i class="fas fa-check"></i> Live Scoring</div>
+                <div class="pill"><i class="fas fa-check"></i> Team Management</div>
+                <div class="pill"><i class="fas fa-check"></i> Bracket Generator</div>
+                <div class="pill"><i class="fas fa-check"></i> Payment Tracking</div>
+                <div class="pill"><i class="fas fa-check"></i> Scheduling</div>
+                <div class="pill"><i class="fas fa-check"></i> Analytics</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right form panel -->
+    <div class="right-panel">
+        <div class="form-container">
+            <h2>Create Account</h2>
+            <p class="subtitle">Join the tournament revolution today.</p>
+
+            <form id="registerForm" novalidate autocomplete="off">
+
+                <!-- Name -->
+                <div class="input-group" id="nameGroup">
+                    <label for="name">Full Name</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="name" placeholder="e.g. Cristiano Ronaldo" aria-required="true">
+                        <i class="fas fa-user field-icon"></i>
+                    </div>
+                    <div class="error-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+                </div>
+
+                <!-- Email -->
+                <div class="input-group" id="emailGroup">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" placeholder="you@example.com" aria-required="true">
+                        <i class="fas fa-envelope field-icon"></i>
+                    </div>
+                    <div class="error-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+                </div>
+
+                <!-- Password -->
+                <div class="input-group" id="passwordGroup">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" placeholder="Min. 8 characters" aria-required="true">
+                        <i class="fas fa-lock field-icon"></i>
+                        <i class="fas fa-eye pw-toggle" id="pwToggle1" aria-label="Toggle password visibility"></i>
+                    </div>
+                    <div class="strength-bar"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+                    <div class="strength-label" id="strengthLabel"></div>
+                    <div class="error-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="input-group" id="confirmGroup">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="confirmPassword" placeholder="Re-enter your password" aria-required="true">
+                        <i class="fas fa-lock field-icon"></i>
+                        <i class="fas fa-eye pw-toggle" id="pwToggle2" aria-label="Toggle confirm password visibility"></i>
+                    </div>
+                    <div class="error-msg"><i class="fas fa-exclamation-circle"></i><span></span></div>
+                </div>
+
+                <!-- Role selector -->
+                <label style="font-size:0.8rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.5rem;display:block;">Select Role</label>
+                <div class="role-selector" id="roleSelector">
+                    <div class="role-card active" data-role="player" tabindex="0" role="radio" aria-checked="true">
+                        <i class="fas fa-running"></i>
+                        <span>Player</span>
+                        <div class="role-check"><i class="fas fa-check"></i></div>
+                    </div>
+                    <div class="role-card" data-role="coach" tabindex="0" role="radio" aria-checked="false">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Coach</span>
+                        <div class="role-check"><i class="fas fa-check"></i></div>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <span class="btn-text">Create Account</span>
+                    <span class="spinner"></span>
+                </button>
+            </form>
+
+            <div class="form-footer">
+                Already have an account? <a href="dashboard.html">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ── DOM references ──
+        const form = document.getElementById('registerForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const pwInput = document.getElementById('password');
+        const confirmInput = document.getElementById('confirmPassword');
+        const submitBtn = document.getElementById('submitBtn');
+        const roleSelector = document.getElementById('roleSelector');
+        const strengthLabel = document.getElementById('strengthLabel');
+        let selectedRole = 'player';
+
+        // ── Role card selection ──
+        roleSelector.querySelectorAll('.role-card').forEach(card => {
+            card.addEventListener('click', () => selectRole(card));
+            card.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectRole(card); }
+            });
+        });
+
+        function selectRole(card) {
+            roleSelector.querySelectorAll('.role-card').forEach(c => {
+                c.classList.remove('active');
+                c.setAttribute('aria-checked', 'false');
+            });
+            card.classList.add('active');
+            card.setAttribute('aria-checked', 'true');
+            selectedRole = card.dataset.role;
+        }
+
+        // ── Password visibility toggles ──
+        document.getElementById('pwToggle1').addEventListener('click', () => togglePw(pwInput, document.getElementById('pwToggle1')));
+        document.getElementById('pwToggle2').addEventListener('click', () => togglePw(confirmInput, document.getElementById('pwToggle2')));
+
+        function togglePw(input, icon) {
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            icon.classList.replace(isPassword ? 'fa-eye' : 'fa-eye-slash', isPassword ? 'fa-eye-slash' : 'fa-eye');
+        }
+
+        // ── Password strength meter ──
+        pwInput.addEventListener('input', () => {
+            const val = pwInput.value;
+            const bars = document.querySelectorAll('.strength-bar .bar');
+            let score = 0;
+            if (val.length >= 8) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+
+            const levels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+            const classes = ['', 'weak', 'medium', 'medium', 'strong'];
+
+            bars.forEach((bar, i) => {
+                bar.className = 'bar';
+                if (i < score && val.length > 0) {
+                    bar.classList.add('active', classes[score]);
+                }
+            });
+            strengthLabel.textContent = val.length > 0 ? levels[score] : '';
+            if (score > 0 && val.length > 0) {
+                strengthLabel.style.color = score <= 1 ? 'var(--danger)' : score <= 2 ? 'var(--warning)' : 'var(--success)';
+            }
+        });
+
+        // ── Validation helpers ──
+        function setError(groupId, message) {
+            const group = document.getElementById(groupId);
+            group.classList.add('error');
+            group.classList.remove('success');
+            group.querySelector('.error-msg span').textContent = message;
+        }
+
+        function setSuccess(groupId) {
+            const group = document.getElementById(groupId);
+            group.classList.remove('error');
+            group.classList.add('success');
+        }
+
+        function clearState(groupId) {
+            const group = document.getElementById(groupId);
+            group.classList.remove('error', 'success');
+        }
+
+        // Real-time validation on blur
+        nameInput.addEventListener('blur', () => validateName());
+        emailInput.addEventListener('blur', () => validateEmail());
+        pwInput.addEventListener('blur', () => validatePassword());
+        confirmInput.addEventListener('blur', () => validateConfirm());
+
+        // Clear error on input
+        nameInput.addEventListener('input', () => clearState('nameGroup'));
+        emailInput.addEventListener('input', () => clearState('emailGroup'));
+        confirmInput.addEventListener('input', () => clearState('confirmGroup'));
+
+        function validateName() {
+            const val = nameInput.value.trim();
+            if (!val) { setError('nameGroup', 'Full name is required.'); return false; }
+            if (val.length < 2) { setError('nameGroup', 'Name must be at least 2 characters.'); return false; }
+            setSuccess('nameGroup'); return true;
+        }
+
+        function validateEmail() {
+            const val = emailInput.value.trim();
+            if (!val) { setError('emailGroup', 'Email is required.'); return false; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) { setError('emailGroup', 'Please enter a valid email address.'); return false; }
+            setSuccess('emailGroup'); return true;
+        }
+
+        function validatePassword() {
+            const val = pwInput.value;
+            if (!val) { setError('passwordGroup', 'Password is required.'); return false; }
+            if (val.length < 8) { setError('passwordGroup', 'Password must be at least 8 characters.'); return false; }
+            setSuccess('passwordGroup'); return true;
+        }
+
+        function validateConfirm() {
+            const val = confirmInput.value;
+            if (!val) { setError('confirmGroup', 'Please confirm your password.'); return false; }
+            if (val !== pwInput.value) { setError('confirmGroup', 'Passwords do not match.'); return false; }
+            setSuccess('confirmGroup'); return true;
+        }
+
+        // ── Form submit ──
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+
+            const v1 = validateName();
+            const v2 = validateEmail();
+            const v3 = validatePassword();
+            const v4 = validateConfirm();
+
+            if (!v1 || !v2 || !v3 || !v4) {
+                showToast('Please fix the errors above.', 'error');
+                return;
+            }
+
+            // Simulate submission
+            submitBtn.classList.add('loading');
+
+            setTimeout(() => {
+                submitBtn.classList.remove('loading');
+                showToast(`Account created as ${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}! Redirecting...`, 'success');
+
+                // Store user data in localStorage for dashboard to read
+                const userData = {
+                    name: nameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    role: selectedRole
+                };
+                localStorage.setItem('sportTourneyUser', JSON.stringify(userData));
+
+                // Redirect after short delay
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+            }, 1800);
+        });
+
+        // ── Ripple effect on button ──
+        submitBtn.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            this.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+        });
+
+        // ── Toast notifications ──
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+            toast.innerHTML = `<i class="fas ${icon}"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('toast-out');
+                toast.addEventListener('animationend', () => toast.remove());
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
