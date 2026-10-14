@@ -1,0 +1,194 @@
+erDiagram
+    ACADEMIES {
+        BIGINT id PK
+        VARCHAR name UK
+        VARCHAR address
+        VARCHAR logo_path
+        TIMESTAMP created_at
+    }
+
+    SPORTS {
+        BIGINT id PK
+        VARCHAR name UK
+        TIMESTAMP created_at
+    }
+
+    ACADEMY_SPORTS {
+        BIGINT academy_id PK, FK
+        BIGINT sport_id PK, FK
+        TIMESTAMP created_at
+    }
+
+    USERS {
+        BIGINT id PK
+        BIGINT academy_id FK
+        VARCHAR name
+        VARCHAR first_name
+        VARCHAR last_name
+        DATE birth_date
+        VARCHAR phone
+        VARCHAR email UK
+        VARCHAR password_hash
+        ENUM role
+        ENUM profile_status
+        VARCHAR profile_photo
+        TIMESTAMP created_at
+    }
+
+    USER_SPORTS {
+        BIGINT user_id PK, FK
+        BIGINT sport_id PK, FK
+        TIMESTAMP created_at
+    }
+
+    VENUES {
+        BIGINT id PK
+        BIGINT academy_id FK
+        VARCHAR name
+        VARCHAR location
+    }
+
+    TEAMS {
+        BIGINT id PK
+        BIGINT academy_id FK
+        VARCHAR name
+        BIGINT sport_id FK
+        BIGINT coach_id FK
+        BIGINT captain_id FK
+        BIGINT vice_captain_id FK
+        ENUM status
+        TIMESTAMP created_at
+    }
+
+    TEAM_PLAYERS {
+        BIGINT team_id PK, FK
+        BIGINT player_id PK, FK
+        VARCHAR sport_role
+        TIMESTAMP joined_at
+    }
+
+    EVENTS {
+        BIGINT id PK
+        BIGINT academy_id FK
+        VARCHAR title
+        ENUM event_type
+        BIGINT sport_id FK
+        BIGINT venue_id FK
+        BIGINT opponent_team_id FK
+        DATETIME start_datetime
+        DATETIME end_datetime
+        ENUM status
+        INT home_score
+        INT away_score
+        BIGINT created_by FK
+        BIGINT referee_id FK
+        TIMESTAMP created_at
+    }
+
+    EVENT_TEAMS {
+        BIGINT event_id PK, FK
+        BIGINT team_id PK, FK
+        ENUM team_side
+    }
+
+    APPROVALS {
+        BIGINT id PK
+        BIGINT academy_id FK
+        ENUM type
+        BIGINT reference_id
+        BIGINT requested_by FK
+        ENUM status
+        BIGINT reviewed_by FK
+        DATETIME reviewed_at
+        TIMESTAMP created_at
+    }
+
+    TEAM_JOIN_REQUESTS {
+        BIGINT id PK
+        BIGINT academy_id FK
+        BIGINT team_id FK
+        BIGINT player_id FK
+        ENUM status
+        BIGINT reviewed_by FK
+        DATETIME reviewed_at
+        TIMESTAMP created_at
+    }
+
+    INTER_ACADEMY_EVENT_REQUESTS {
+        BIGINT id PK
+        BIGINT event_id FK
+        BIGINT invited_academy_id FK
+        BIGINT invited_team_id FK
+        ENUM status
+        BIGINT reviewed_by FK
+        DATETIME reviewed_at
+        TIMESTAMP created_at
+    }
+
+    MESSAGES {
+        BIGINT id PK
+        BIGINT academy_id FK
+        BIGINT sender_id FK
+        BIGINT recipient_id FK
+        VARCHAR subject
+        TEXT body
+        BOOLEAN is_read
+        TIMESTAMP created_at
+    }
+
+    PLAYER_STATS {
+        BIGINT id PK
+        BIGINT event_id FK
+        BIGINT player_id FK
+        DECIMAL score_or_runs
+        JSON stats
+        TEXT performance_desc
+        BIGINT submitted_by FK
+        TIMESTAMP created_at
+    }
+
+    ACADEMIES ||--o{ USERS : owns
+    ACADEMIES ||--o{ ACADEMY_SPORTS : offers
+    SPORTS ||--o{ ACADEMY_SPORTS : included_in
+    USERS ||--o{ USER_SPORTS : registers_for
+    SPORTS ||--o{ USER_SPORTS : has_players
+
+    ACADEMIES ||--o{ VENUES : owns
+    ACADEMIES ||--o{ TEAMS : owns
+    SPORTS ||--o{ TEAMS : categorizes
+    USERS ||--o{ TEAMS : coaches
+    USERS ||--o{ TEAMS : captains
+    USERS ||--o{ TEAMS : vice_captains
+    TEAMS ||--o{ TEAM_PLAYERS : contains
+    USERS ||--o{ TEAM_PLAYERS : joins
+
+    ACADEMIES ||--o{ EVENTS : schedules
+    SPORTS ||--o{ EVENTS : uses
+    VENUES ||--o{ EVENTS : hosts
+    USERS ||--o{ EVENTS : creates
+    USERS ||--o{ EVENTS : referees
+    TEAMS ||--o{ EVENTS : opponent
+    EVENTS ||--o{ EVENT_TEAMS : includes
+    TEAMS ||--o{ EVENT_TEAMS : participates
+
+    ACADEMIES ||--o{ APPROVALS : receives
+    USERS ||--o{ APPROVALS : requests
+    USERS ||--o{ APPROVALS : reviews
+
+    ACADEMIES ||--o{ TEAM_JOIN_REQUESTS : receives
+    TEAMS ||--o{ TEAM_JOIN_REQUESTS : requested_for
+    USERS ||--o{ TEAM_JOIN_REQUESTS : submits
+    USERS ||--o{ TEAM_JOIN_REQUESTS : reviews
+
+    EVENTS ||--o{ INTER_ACADEMY_EVENT_REQUESTS : invites
+    ACADEMIES ||--o{ INTER_ACADEMY_EVENT_REQUESTS : invited
+    TEAMS ||--o{ INTER_ACADEMY_EVENT_REQUESTS : invited_team
+    USERS ||--o{ INTER_ACADEMY_EVENT_REQUESTS : reviews
+
+    ACADEMIES ||--o{ MESSAGES : owns
+    USERS ||--o{ MESSAGES : sends
+    USERS ||--o{ MESSAGES : receives
+
+    EVENTS ||--o{ PLAYER_STATS : records
+    USERS ||--o{ PLAYER_STATS : performs
+    USERS ||--o{ PLAYER_STATS : submits

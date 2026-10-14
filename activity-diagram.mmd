@@ -1,0 +1,142 @@
+flowchart TD
+    Start([Start]) --> Landing[Open SportSync]
+    Landing --> Choice{User action}
+
+    Choice -->|Register academy| RegisterAcademy[Enter academy and admin details]
+    RegisterAcademy --> ValidateAcademy{Valid data and unique email/academy?}
+    ValidateAcademy -->|No| RegisterAcademyError[Show validation error]
+    RegisterAcademyError --> RegisterAcademy
+    ValidateAcademy -->|Yes| CreateAcademy[Create academy, admin user and approval]
+    CreateAcademy --> AdminReview[Academy admin approval queue]
+    AdminReview --> AcademyDecision{Approve registration?}
+    AcademyDecision -->|Reject| RejectAcademy[Mark user rejected and notify requester]
+    AcademyDecision -->|Approve| ActivateAdmin[Activate admin profile and notify requester]
+    RejectAcademy --> End([End])
+    ActivateAdmin --> Login
+
+    Choice -->|Join academy| JoinAcademy[Enter personal details and password confirmation]
+    JoinAcademy --> ValidateJoin{Valid data, password and unique email?}
+    ValidateJoin -->|No| JoinError[Show validation error]
+    JoinError --> JoinAcademy
+    ValidateJoin -->|Yes| CreateJoin[Create pending user and academy approval]
+    CreateJoin --> AdminReview
+
+    Choice -->|Login| Login[Enter email and password]
+    Login --> Authenticate{Credentials valid and profile active?}
+    Authenticate -->|No| LoginError[Show login error]
+    LoginError --> Login
+    Authenticate -->|Yes| RoleCheck{User role}
+
+    RoleCheck -->|Admin| AdminDashboard[Open admin dashboard]
+    RoleCheck -->|Coach| CoachDashboard[Open coach dashboard]
+    RoleCheck -->|Referee| RefereeDashboard[Open referee dashboard]
+    RoleCheck -->|Player/Athlete| PlayerDashboard[Open player dashboard]
+
+    AdminDashboard --> AdminActions{Admin action}
+    AdminActions -->|Manage profile| AdminProfile[Update profile, password and academy sports]
+    AdminActions -->|Manage approvals| ReviewApprovals[View pending approvals and requester roles]
+    AdminActions -->|Manage venues| VenueForm[Add academy venue]
+    AdminActions -->|Create match| MatchForm
+    AdminActions -->|Browse system| BrowsePublic[View players, teams and matches]
+
+    CoachDashboard --> CoachActions{Coach action}
+    CoachActions -->|Create team| TeamForm[Enter team, sport, coach and players]
+    CoachActions -->|Create match| MatchForm
+    CoachActions -->|View results| BrowsePublic
+
+    PlayerDashboard --> PlayerActions{Player action}
+    PlayerActions -->|Browse teams| BrowseTeams[Search players and active teams]
+    PlayerActions -->|View team| TeamDetails[View team academy, sport and members]
+    TeamDetails --> TeamJoinChoice{Request to join?}
+    TeamJoinChoice -->|No| BrowseTeams
+    TeamJoinChoice -->|Yes| SportEligibility{Player registered for team sport?}
+    SportEligibility -->|No| JoinSportError[Show sport eligibility error]
+    JoinSportError --> BrowseTeams
+    SportEligibility -->|Yes| ExistingRequest{Existing request?}
+    ExistingRequest -->|Rejected| ResetRequest[Reset request to pending]
+    ExistingRequest -->|None| CreateTeamJoin[Create team join request]
+    ExistingRequest -->|Approved| AlreadyMember[Show approved membership]
+    ResetRequest --> CreateJoinApproval[Create team join approval]
+    CreateTeamJoin --> CreateJoinApproval
+    CreateJoinApproval --> TargetAdminReview[Target academy admin reviews request]
+    TargetAdminReview --> TeamJoinDecision{Approve join request?}
+    TeamJoinDecision -->|Reject| RejectJoin[Mark rejected and notify player]
+    TeamJoinDecision -->|Approve| ValidateJoinApproval{Player active and sport eligible?}
+    ValidateJoinApproval -->|No| RejectInvalidJoin[Reject invalid request and notify player]
+    ValidateJoinApproval -->|Yes| AddMembership[Add player to team_players]
+    AddMembership --> KeepAcademy[Keep original users.academy_id unchanged]
+    KeepAcademy --> NotifyJoin[Notify player of approval]
+    RejectJoin --> PlayerDashboard
+    RejectInvalidJoin --> PlayerDashboard
+    NotifyJoin --> PlayerDashboard
+
+    TeamForm --> ValidateTeam{Valid sport, coach and unique team name?}
+    ValidateTeam -->|No| TeamError[Show team validation error]
+    TeamError --> TeamForm
+    ValidateTeam -->|Yes| CreateTeam[Create pending or active team]
+    CreateTeam --> TeamApproval{Approval required?}
+    TeamApproval -->|Yes| ReviewApprovals
+    TeamApproval -->|No| CoachDashboard
+    ReviewApprovals --> ApprovalType{Approval type}
+    ApprovalType -->|User registration| UserDecision{Approve user?}
+    ApprovalType -->|Team creation| TeamDecision{Approve team?}
+    ApprovalType -->|Team join request| TeamJoinDecision
+    UserDecision -->|Approve| ActivateUser[Activate user]
+    UserDecision -->|Reject| RejectUser[Reject user]
+    TeamDecision -->|Approve| ActivateTeam[Activate team]
+    TeamDecision -->|Reject| RejectTeam[Reject team]
+    ActivateUser --> NotifyApproval[Send approval notification]
+    RejectUser --> NotifyApproval
+    ActivateTeam --> NotifyApproval
+    RejectTeam --> NotifyApproval
+    NotifyApproval --> AdminDashboard
+
+    VenueForm --> VenueValidation{Valid venue and unique name in academy?}
+    VenueValidation -->|No| VenueError[Show venue error]
+    VenueError --> VenueForm
+    VenueValidation -->|Yes| SaveVenue[Save venue]
+    SaveVenue --> AdminDashboard
+
+    MatchForm --> SelectSport[Select sport]
+    SelectSport --> LoadTeams[Load all active teams for selected sport]
+    LoadTeams --> SelectTeams[Select exactly two teams]
+    SelectTeams --> SelectVenue[Select academy venue, date and time]
+    SelectVenue --> SelectReferee[Select active referee registered for sport]
+    SelectReferee --> ValidateMatch{Validate teams, venue, officials and schedule}
+    ValidateMatch -->|Invalid| MatchError[Show conflict or validation error]
+    MatchError --> MatchForm
+    ValidateMatch -->|Valid| CreateEvent[Create event and event_teams]
+    CreateEvent --> CrossAcademy{Teams from different academies?}
+    CrossAcademy -->|Yes| CrossAcademyRecord[Record cross-academy participation]
+    CrossAcademy -->|No| MatchCreated[Match scheduled]
+    CrossAcademyRecord --> MatchCreated
+    MatchCreated --> MatchDetails[Public match details]
+
+    RefereeDashboard --> AssignedMatches[View assigned matches]
+    AssignedMatches --> SubmitResultChoice{Submit result?}
+    SubmitResultChoice -->|No| RefereeDashboard
+    SubmitResultChoice -->|Yes| ResultForm[Enter scores and player statistics]
+    ResultForm --> ValidateResult{Valid result and permitted event?}
+    ValidateResult -->|No| ResultError[Show result error]
+    ResultError --> ResultForm
+    ValidateResult -->|Yes| SaveResult[Save event scores and player_stats]
+    SaveResult --> CompleteEvent[Mark event completed]
+    CompleteEvent --> MatchDetails
+
+    BrowsePublic --> SearchChoice{Search or open item}
+    SearchChoice -->|Player| PlayerDetails[View player profile and teams]
+    SearchChoice -->|Team| TeamDetails
+    SearchChoice -->|Upcoming match| MatchDetails
+    SearchChoice -->|Recent match| MatchDetails
+    MatchDetails --> MatchView[View venue, time, teams, referee and scores]
+    MatchView --> Completed{Completed match?}
+    Completed -->|Yes| EventStats[Show only players and stats for this event]
+    Completed -->|No| MatchView
+    PlayerDetails --> BrowsePublic
+    EventStats --> BrowsePublic
+
+    AdminDashboard --> Logout
+    CoachDashboard --> Logout
+    RefereeDashboard --> Logout
+    PlayerDashboard --> Logout
+    Logout[Logout and destroy session] --> End
