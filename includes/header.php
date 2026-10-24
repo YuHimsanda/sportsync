@@ -17,6 +17,18 @@ if ($user && $user["academy_id"]) {
     $unreadMessages = (int) ($row[0] ?? 0);
     $unreadStatement->close();
 }
+
+// Highlight the link of the page the visitor is currently on
+$currentPage = basename($_SERVER["SCRIPT_NAME"] ?? "");
+if (!function_exists("navActive")) {
+    function navActive(string $file): string
+    {
+        global $currentPage;
+        return $currentPage === $file
+            ? ' class="active" aria-current="page"'
+            : "";
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -32,17 +44,21 @@ if ($user && $user["academy_id"]) {
     <a class="brand" href="index.php">
         <img src="Media/Logo.png" alt="SportSync">
     </a>
-    <nav class="main-nav">
-        <a href="players.php">Players</a>
-        <a href="matches.php">Matches</a>
-        <a href="teams.php">Teams</a>
+
+    <button class="nav-toggle" id="navToggle" type="button"
+            aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" id="mainNav">
+        <a href="players.php"<?= navActive("players.php") ?>>Players</a>
+        <a href="matches.php"<?= navActive("matches.php") ?>>Matches</a>
+        <a href="teams.php"<?= navActive("teams.php") ?>>Teams</a>
         <?php if ($user): ?>
-            <a href="dashboard.php">Dashboard</a>
-            <a href="profile.php">Profile</a>
+            <a href="dashboard.php"<?= navActive("dashboard.php") ?>>Dashboard</a>
+            <a href="profile.php"<?= navActive("profile.php") ?>>Profile</a>
             <?php if ($user["role"] !== "admin"): ?>
-                <a href="messages.php">Messages<?= $unreadMessages
-                    ? " (" . $unreadMessages . ")"
-                    : "" ?></a>
+                <a href="messages.php"<?= navActive("messages.php") ?>>Messages<?php if ($unreadMessages): ?><span class="nav-badge"><?= $unreadMessages ?></span><?php endif; ?></a>
             <?php endif; ?>
             <a class="button button-small" href="logout.php">Log out</a>
         <?php else: ?>
@@ -51,8 +67,6 @@ if ($user && $user["academy_id"]) {
     </nav>
 </header>
 <?php if ($flash): ?>
-    <div class="flash <?= e($flash["type"]) ?>"><?= e(
-    $flash["message"],
-) ?></div>
+    <div class="flash <?= e($flash["type"]) ?>" role="status"><?= e($flash["message"]) ?></div>
 <?php endif; ?>
 <main class="page-shell">

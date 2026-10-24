@@ -43,7 +43,7 @@ include "includes/header.php";
         <p>SportSync brings players, coaches, referees and academy admins together to organise teams, matches and meaningful performance records in one clear place.</p>
         <div class="hero-actions">
             <a class="button" href="register-academy.php">Register an Academy</a>
-            <a class="button button-outline" style="color:#fff" href="join-academy.php">Join an Academy</a>
+            <a class="button button-outline" style="color:#fff" href="join-academy.php">Join to an Academy</a>
         </div>
     </div>
     <div class="hero-card"><h2>One connected sports community</h2><p>Discover academies, find players, follow upcoming fixtures and keep every result ready for the next challenge.</p><strong>Cricket · Football · Basketball · Hockey · Rugby</strong></div>
